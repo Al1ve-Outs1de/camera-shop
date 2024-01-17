@@ -115,5 +115,5 @@ export default function FooterComponent() {
         </ul>
       </div>
     </footer>
-  )
+  );
 }

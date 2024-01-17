@@ -661,5 +661,5 @@ export default function ProductPage() {
         </svg>
       </a>
     </>
-  )
+  );
 }

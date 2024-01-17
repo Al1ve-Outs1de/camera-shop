@@ -7,9 +7,10 @@ export default function ErrorPage() {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center'
-    }}>
+    }}
+    >
       <h1>Page not found</h1>
       <Link to={AppRoute.Root} />
     </main>
-  )
+  );
 }

@@ -3,7 +3,7 @@ import { AppRoute } from '../consts';
 
 export default function HeaderComponent() {
   const location = useLocation().pathname;
-  console.log(location)
+
   return (
     <header className="header" id="header">
       <div className="container">
@@ -91,5 +91,5 @@ export default function HeaderComponent() {
         </Link>
       </div>
     </header >
-  )
+  );
 }

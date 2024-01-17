@@ -53,7 +53,7 @@ export default function BasketPage() {
                   <p className="basket-item__title">Орлёнок</p>
                   <ul className="basket-item__list">
                     <li className="basket-item__list-item">
-                      <span className="basket-item__article">Артикул:</span>{" "}
+                      <span className="basket-item__article">Артикул:</span>{' '}
                       <span className="basket-item__number">O78DFGSD832</span>
                     </li>
                     <li className="basket-item__list-item">Плёночная фотокамера</li>
@@ -123,7 +123,7 @@ export default function BasketPage() {
                   <p className="basket-item__title">Ретрокамера «Das Auge IV»</p>
                   <ul className="basket-item__list">
                     <li className="basket-item__list-item">
-                      <span className="basket-item__article">Артикул:</span>{" "}
+                      <span className="basket-item__article">Артикул:</span>{' '}
                       <span className="basket-item__number">DA4IU67AD5</span>
                     </li>
                     <li className="basket-item__list-item">
@@ -231,5 +231,5 @@ export default function BasketPage() {
       </div>
     </main>
 
-  )
+  );
 }
