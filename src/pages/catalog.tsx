@@ -1,10 +1,41 @@
+import { useEffect, useState } from 'react';
 import AsideFilterComponent from '../components/aside-filter-form';
 import BannerSliderComponent from '../components/banner-slider';
 import CatalogListComponent from '../components/catalog-list';
 import PaginationComponent from '../components/pagination';
 import SortingComponent from '../components/sorting';
+import axios from 'axios';
+import { CARDS_PER_PAGE } from '../consts';
+import type { CatalogCard } from '../types/catalog-card-type';
+import { useSearchParams } from 'react-router-dom';
 
 export default function CatalogPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [cards, setCards] = useState<CatalogCard[]>([]);
+  const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
+
+  useEffect(() => {
+    const getCameras = async () => {
+      const { data } = await axios.get<CatalogCard[]>('https://camera-shop.accelerator.pages.academy/cameras');
+      setCards(data);
+    };
+    getCameras();
+  }, []);
+
+  useEffect(() => {
+    if (currentPage !== 1) {
+      setSearchParams({ page: currentPage.toString() });
+    }
+  }, [currentPage, setSearchParams]);
+
+  const lastCardIndexForPage = currentPage * CARDS_PER_PAGE;
+  const firstCardIndexForPage = lastCardIndexForPage - CARDS_PER_PAGE;
+  const currentCardsForPage = cards.slice(firstCardIndexForPage, lastCardIndexForPage);
+
+  const changePage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <main>
       <BannerSliderComponent />
@@ -37,8 +68,9 @@ export default function CatalogPage() {
               </div>
               <div className="catalog__content">
                 <SortingComponent />
-                <CatalogListComponent />
-                <PaginationComponent />
+                <CatalogListComponent cards={currentCardsForPage} />
+                {cards.length > CARDS_PER_PAGE &&
+                  <PaginationComponent totalCardsCount={cards.length} currentPage={currentPage} onClick={changePage} />}
               </div>
             </div>
           </div>
