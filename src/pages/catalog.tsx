@@ -8,11 +8,16 @@ import axios from 'axios';
 import { CARDS_PER_PAGE } from '../consts';
 import type { CatalogCard } from '../types/catalog-card-type';
 import { useSearchParams } from 'react-router-dom';
+import PopupContainerComponent from '../components/popup-container';
+import CatalogCardComponent from '../components/catalog-card';
+import PopupCatalogCardComponent from '../components/popup-catalog-card';
 
 export default function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cards, setCards] = useState<CatalogCard[]>([]);
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get('page')) || 1);
+  const [isModalActive, setModalActive] = useState(false);
+  const [activeCard, setActiveCard] = useState<CatalogCard | null>(null);
 
   useEffect(() => {
     const getCameras = async () => {
@@ -34,6 +39,15 @@ export default function CatalogPage() {
 
   const changePage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
+  };
+
+  const setActiveCardWithModal = (id: number) => {
+    const currentActiveCard = cards.find((card) => card.id === id);
+
+    if (currentActiveCard) {
+      setModalActive(true);
+      setActiveCard(currentActiveCard);
+    }
   };
 
   return (
@@ -68,7 +82,10 @@ export default function CatalogPage() {
               </div>
               <div className="catalog__content">
                 <SortingComponent />
-                <CatalogListComponent cards={currentCardsForPage} />
+                <div className="cards catalog__cards">
+                  {currentCardsForPage.map(
+                    (card) => <CatalogCardComponent catalogCard={card} onClick={setActiveCardWithModal} key={card.id} />)}
+                </div>
                 {cards.length > CARDS_PER_PAGE &&
                   <PaginationComponent totalCardsCount={cards.length} currentPage={currentPage} onClick={changePage} />}
               </div>
@@ -76,6 +93,9 @@ export default function CatalogPage() {
           </div>
         </section>
       </div>
+      <PopupContainerComponent isActive={isModalActive} onClick={() => setModalActive(false)}>
+        {activeCard && <PopupCatalogCardComponent card={activeCard} />}
+      </PopupContainerComponent>
     </main>
   );
 }

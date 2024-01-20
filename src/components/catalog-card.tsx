@@ -1,10 +1,13 @@
+import { Link } from 'react-router-dom';
 import type { CatalogCard } from '../types/catalog-card-type';
+import { AppRoute } from '../consts';
 
 type CatalogCardProps = {
   catalogCard: CatalogCard;
+  onClick: (id: number) => void;
 }
 
-export default function CatalogCardComponent({ catalogCard }: CatalogCardProps) {
+export default function CatalogCardComponent({ catalogCard, onClick }: CatalogCardProps) {
   const cardRating: JSX.Element[] = [];
 
   for (let i = 1; i <= 5; i++) {
@@ -51,12 +54,13 @@ export default function CatalogCardComponent({ catalogCard }: CatalogCardProps) 
         <button
           className="btn btn--purple product-card__btn"
           type="button"
+          onClick={() => onClick(catalogCard.id)}
         >
           Купить
         </button>
-        <a className="btn btn--transparent" href="#">
+        <Link className="btn btn--transparent" to={`${AppRoute.Product}/${catalogCard.id}`}>
           Подробнее
-        </a>
+        </Link>
       </div>
     </div>
   );
