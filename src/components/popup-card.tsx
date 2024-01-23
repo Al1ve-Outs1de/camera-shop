@@ -1,28 +1,17 @@
-import type { CatalogCard } from '../types/catalog-card-type';
+import type { Card } from '../types/catalog-card.type';
+import ProductImageComponent from './product-image';
 
 type PopupCatalogCardProps = {
-  card: CatalogCard;
+  card: Card;
 }
 
-export default function PopupCatalogCardComponent({ card }: PopupCatalogCardProps) {
+export default function PopupCardComponent({ card }: PopupCatalogCardProps) {
   return (
     <>
       <p className="title title--h4">Добавить товар в корзину</p>
       <div className="basket-item basket-item--short">
         <div className="basket-item__img">
-          <picture>
-            <source
-              type="image/webp"
-              srcSet={`${card.previewImgWebp}, ${card.previewImgWebp2x} 2x`}
-            />
-            <img
-              src="img/content/orlenok.jpg"
-              srcSet="img/content/orlenok@2x.jpg 2x"
-              width={140}
-              height={120}
-              alt={card.name}
-            />
-          </picture>
+          <ProductImageComponent cardImage={card} />
         </div>
         <div className="basket-item__description">
           <p className="basket-item__title">{card.name}</p>

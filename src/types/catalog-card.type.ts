@@ -1,4 +1,4 @@
-export type CatalogCard = {
+export type Card = {
   id: number;
   name: string;
   vendorCode: string;

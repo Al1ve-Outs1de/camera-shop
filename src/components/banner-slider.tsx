@@ -4,14 +4,18 @@ import 'swiper/css/pagination';
 import SlideComponent from './slide';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { CSSProperties } from 'react';
+import type { Promo } from '../types/promo.type';
 
+type BannerSliderProps = {
+  promos: Promo[];
+}
 
-export default function BannerSliderComponent() {
+export default function BannerSliderComponent({ promos }: BannerSliderProps) {
   return (
     <Swiper
       modules={[Pagination, Autoplay]}
       slidesPerView={1}
-      className='banner'
+      // className='banner'
       loop
       autoplay={{
         delay: 3000,
@@ -21,9 +25,7 @@ export default function BannerSliderComponent() {
       pagination={{ clickable: true }}
       style={{ '--swiper-pagination-bullet-size': '16px' } as CSSProperties}
     >
-      <SwiperSlide><SlideComponent /></SwiperSlide>
-      <SwiperSlide><SlideComponent /></SwiperSlide>
-      <SwiperSlide><SlideComponent /></SwiperSlide>
+      {promos.map((promo) => <SwiperSlide key={promo.id}><SlideComponent promo={promo} /></SwiperSlide>)}
     </Swiper>
   );
 }

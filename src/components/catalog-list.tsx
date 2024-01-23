@@ -1,14 +1,14 @@
-import type { CatalogCard } from '../types/catalog-card-type';
-import CatalogCardComponent from './catalog-card';
+import type { Card } from '../types/catalog-card.type';
+import CardComponent from './card';
 
 type CatalogListProps = {
-  cards: CatalogCard[];
+  cards: Card[];
 }
 
 export default function CatalogListComponent({ cards }: CatalogListProps) {
   return (
     <div className="cards catalog__cards">
-      {cards.map((card) => <CatalogCardComponent catalogCard={card} key={card.id} />)}
+      {cards.map((card) => <CardComponent catalogCard={card} key={card.id} />)}
     </div>
   );
 }
