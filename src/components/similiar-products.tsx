@@ -5,7 +5,7 @@ import 'swiper/css/navigation';
 import type { Card } from '../types/catalog-card.type';
 import { useState } from 'react';
 import CardComponent from './card';
-import PopupContainerComponent from './popup-container';
+import PopupCardContainerComponent from './popup-card-container';
 import PopupCardComponent from './popup-card';
 
 type SimiliarProductsProps = {
@@ -73,9 +73,9 @@ export default function SimiliarProductsComponent({ similarProducts }: SimiliarP
               </svg>
             </button>
 
-            <PopupContainerComponent isActive={isModalActive} onClick={() => setActiveStatus(false)}>
+            <PopupCardContainerComponent isActive={isModalActive} onClick={() => setActiveStatus(false)}>
               {activeCard && <PopupCardComponent card={activeCard} />}
-            </PopupContainerComponent>
+            </PopupCardContainerComponent>
           </div>
         </div>
       </section>

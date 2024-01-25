@@ -3,6 +3,9 @@ import type { Card } from '../types/catalog-card.type';
 import { AppRoute } from '../consts';
 import ProductImageComponent from './product-image';
 import RatingComponent from './rating';
+import { useAppSelector } from '../hooks';
+import { getBasketProducts } from '../redux/slices/basket/selectors';
+import InBasketButtonComponent from './in-basket-button';
 
 type CatalogCardProps = {
   catalogCard: Card;
@@ -10,6 +13,10 @@ type CatalogCardProps = {
 }
 
 export default function CardComponent({ catalogCard, onClick }: CatalogCardProps) {
+
+  const productsInBasket = useAppSelector(getBasketProducts);
+
+  const isInBasket = productsInBasket.some((product) => product.id === catalogCard.id);
 
   return (
     <div>
@@ -32,13 +39,17 @@ export default function CardComponent({ catalogCard, onClick }: CatalogCardProps
         </p>
       </div>
       <div className="product-card__buttons">
-        <button
-          className="btn btn--purple product-card__btn"
-          type="button"
-          onClick={() => onClick(catalogCard.id)}
-        >
-          Купить
-        </button>
+        {isInBasket ?
+          <InBasketButtonComponent />
+          :
+          <button
+            className="btn btn--purple product-card__btn"
+            type="button"
+            onClick={() => onClick(catalogCard.id)}
+          >
+            Купить
+          </button>}
+
         <Link className="btn btn--transparent" to={`${AppRoute.Product}/${catalogCard.id}`}>
           Подробнее
         </Link>

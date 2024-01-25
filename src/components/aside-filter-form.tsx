@@ -1,4 +1,6 @@
-export default function AsideFilterComponent() {
+import { memo } from 'react';
+
+function AsideFilterComponent() {
   return (
 
     <div className="catalog-filter">
@@ -132,3 +134,7 @@ export default function AsideFilterComponent() {
     </div>
   );
 }
+
+const memoFilterForm = memo(AsideFilterComponent);
+
+export default memoFilterForm;

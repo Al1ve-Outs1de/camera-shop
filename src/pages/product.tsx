@@ -1,17 +1,23 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import ProductCardComponent from '../components/product-card';
 import SimiliarProductsComponent from '../components/similiar-products';
 import type { Card } from '../types/catalog-card.type';
 import type { Review } from '../types/review.type';
 import ReviewsSectionComponent from '../components/reviews-section';
+import { useGetProductReviewsQuery, useGetSimilarProductsQuery, useGetSpecificProductQuery } from '../redux/camerasApi';
+import { AppRoute } from '../consts';
 
 export default function ProductPage() {
   const { id: productId } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Card | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [similiarProducts, setSimiliarProducts] = useState<Card[]>([]);
+
+  const { isLoading: isProductLoading, isError, error } = useGetSpecificProductQuery(productId as string);
+  const { isLoading: isSimilarLoading } = useGetSimilarProductsQuery(productId as string);
+  const { isLoading: isReviewsLoading } = useGetProductReviewsQuery(productId as string);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,6 +38,14 @@ export default function ProductPage() {
       });
     }
   }, [productId]);
+
+  if (isProductLoading || isSimilarLoading || isReviewsLoading) {
+    return <main><h1>Loading</h1></main>;
+  }
+
+  if (isError && 'status' in error && error.status === 404) {
+    return <Navigate to={AppRoute.Error} replace />;
+  }
 
   return (
     <>

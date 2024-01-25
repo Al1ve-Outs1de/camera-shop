@@ -5,6 +5,9 @@ import ProductImageComponent from './product-image';
 import classNames from 'classnames';
 import { CardActiveTab } from '../consts';
 import { useSearchParams } from 'react-router-dom';
+import { useAppSelector } from '../hooks';
+import { getBasketProducts } from '../redux/slices/basket/selectors';
+import InBasketButtonComponent from './in-basket-button';
 
 type ProductCardProps = {
   card: Card;
@@ -12,8 +15,10 @@ type ProductCardProps = {
 
 export default function ProductCardComponent({ card }: ProductCardProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const [activeTab, setActiveTab] = useState('');
+
+  const basketProducts = useAppSelector(getBasketProducts);
+  const isInBasket = basketProducts.some((product) => product.id === card.id);
 
   useEffect(() => {
     const currentQuery = searchParams.get('activeTab');
@@ -47,12 +52,15 @@ export default function ProductCardComponent({ card }: ProductCardProps) {
           <p className="product__price">
             <span className="visually-hidden">Цена:</span>{card.price.toLocaleString()} ₽
           </p>
-          <button className="btn btn--purple" type="button">
-            <svg width={24} height={16} aria-hidden="true">
-              <use xlinkHref="#icon-add-basket" />
-            </svg>
-            Добавить в корзину
-          </button>
+          {!isInBasket ?
+            <button className="btn btn--purple" type="button">
+              <svg width={24} height={16} aria-hidden="true">
+                <use xlinkHref="#icon-add-basket" />
+              </svg>
+              Добавить в корзину
+            </button>
+            :
+            <InBasketButtonComponent />}
           <div className="tabs product__tabs">
             <div className="tabs__controls product__tabs-controls">
               <button className={classNames('tabs__control', { 'is-active': activeTab === CardActiveTab.Characteristics })} type="button" onClick={() => handleTabChange(CardActiveTab.Characteristics)}>
