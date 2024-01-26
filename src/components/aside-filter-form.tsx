@@ -32,7 +32,7 @@ function AsideFilterComponent() {
               <input
                 type="checkbox"
                 name="photocamera"
-                checked
+                defaultChecked
               />
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">
@@ -57,7 +57,7 @@ function AsideFilterComponent() {
               <input
                 type="checkbox"
                 name="digital"
-                checked
+                defaultChecked
               />
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Цифровая</span>
@@ -86,7 +86,7 @@ function AsideFilterComponent() {
               <input
                 type="checkbox"
                 name="collection"
-                checked
+                defaultChecked
                 disabled
               />
               <span className="custom-checkbox__icon" />
@@ -100,7 +100,7 @@ function AsideFilterComponent() {
           <legend className="title title--h5">Уровень</legend>
           <div className="custom-checkbox catalog-filter__item">
             <label>
-              <input type="checkbox" name="zero" checked />
+              <input type="checkbox" name="zero" defaultChecked />
               <span className="custom-checkbox__icon" />
               <span className="custom-checkbox__label">Нулевой</span>
             </label>

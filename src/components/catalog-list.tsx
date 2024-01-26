@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CARDS_PER_PAGE } from '../consts';
 import { useGetProductsQuery } from '../redux/camerasApi';
 import type { Card } from '../types/catalog-card.type';
@@ -19,9 +19,9 @@ export default function CatalogListComponent() {
   const firstCardIndexForPage = lastCardIndexForPage - CARDS_PER_PAGE;
   const currentCardsForPage = cards.slice(firstCardIndexForPage, lastCardIndexForPage);
 
-  const changePage = (pageNumber: number) => {
+  const chagePage = useCallback((pageNumber: number) => {
     setCurrentPage(pageNumber);
-  };
+  }, []);
 
   const setActiveCardWithModal = (id: number) => {
     if (activeCard) {
@@ -48,7 +48,7 @@ export default function CatalogListComponent() {
         {currentCardsForPage.map((card) => <CardComponent catalogCard={card} key={card.id} onClick={setActiveCardWithModal} />)}
       </div>
       {cards.length > CARDS_PER_PAGE &&
-        <PaginationComponent totalCardsCount={cards.length} currentPage={currentPage} onClick={changePage} />}
+        <PaginationComponent totalCardsCount={cards.length} currentPage={currentPage} onClick={chagePage} />}
       <PopupCardContainerComponent isActive={isModalActive} onClick={() => {
         setModalActive(false);
         setTimeout(() => setActiveCard(null), 300);

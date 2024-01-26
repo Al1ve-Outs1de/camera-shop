@@ -5,7 +5,7 @@ import { useAppSelector } from '../hooks';
 export default function HeaderComponent() {
   const location = useLocation().pathname;
 
-  const basketProducts = useAppSelector((state) => state.basket.basketProducts);
+  const basketProductsCount = useAppSelector((state) => state.basket.basketProducts.length);
 
   return (
     <header className="header" id="header">
@@ -91,7 +91,7 @@ export default function HeaderComponent() {
           <svg width={16} height={16} aria-hidden="true">
             <use xlinkHref="#icon-basket" />
           </svg>
-          {!!basketProducts.length && <span className="header__basket-count">{basketProducts.length}</span>}
+          {!!basketProductsCount && <span className="header__basket-count">{basketProductsCount}</span>}
         </Link>
       </div>
     </header >

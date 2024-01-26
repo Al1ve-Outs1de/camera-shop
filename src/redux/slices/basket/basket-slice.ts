@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Card } from '../../../types/catalog-card.type';
+import type { Card } from '../../../types/catalog-card.type';
+import type { BasketProduct } from '../../../types/bakset-product.type';
 
 type basketInitialState = {
-  basketProducts: Card[];
+  basketProducts: BasketProduct[];
 };
 
 const initialState: basketInitialState = {
@@ -15,9 +16,70 @@ export const basketSlice = createSlice({
   initialState,
   reducers: {
     addProductToBasket(state, action: PayloadAction<Card>) {
-      state.basketProducts.push(action.payload);
+      const newProduct = action.payload;
+      const existingProductIndex = state.basketProducts.findIndex(
+        (product) => product.card.id === newProduct.id
+      );
+
+      if (existingProductIndex !== -1) {
+        state.basketProducts[existingProductIndex].count += 1;
+      } else {
+        state.basketProducts.push({ card: newProduct, count: 1 });
+      }
+    },
+    incrementProductCount(
+      state,
+      { payload: productId }: PayloadAction<number>
+    ) {
+      const basketProduct = state.basketProducts.find(
+        (product) => product.card.id === productId
+      );
+
+      if (basketProduct) {
+        basketProduct.count++;
+      }
+    },
+    decrementProductCount(
+      state,
+      { payload: productId }: PayloadAction<number>
+    ) {
+      const basketProduct = state.basketProducts.find(
+        (product) => product.card.id === productId
+      );
+
+      if (basketProduct) {
+        basketProduct.count--;
+      }
+    },
+    removeProductFromBasket(
+      state,
+      { payload: productId }: PayloadAction<number>
+    ) {
+      state.basketProducts = state.basketProducts.filter(
+        (product) => product.card.id !== productId
+      );
+    },
+    setProductCount(
+      state,
+      {
+        payload: { productId, count },
+      }: PayloadAction<{ productId: number; count: number }>
+    ) {
+      const basketProduct = state.basketProducts.find(
+        (product) => product.card.id === productId
+      );
+
+      if (basketProduct) {
+        basketProduct.count = count;
+      }
     },
   },
 });
 
-export const { addProductToBasket } = basketSlice.actions;
+export const {
+  addProductToBasket,
+  incrementProductCount,
+  decrementProductCount,
+  removeProductFromBasket,
+  setProductCount,
+} = basketSlice.actions;

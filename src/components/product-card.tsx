@@ -5,9 +5,10 @@ import ProductImageComponent from './product-image';
 import classNames from 'classnames';
 import { CardActiveTab } from '../consts';
 import { useSearchParams } from 'react-router-dom';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { getBasketProducts } from '../redux/slices/basket/selectors';
 import InBasketButtonComponent from './in-basket-button';
+import { addProductToBasket } from '../redux/slices/basket/basket-slice';
 
 type ProductCardProps = {
   card: Card;
@@ -16,9 +17,10 @@ type ProductCardProps = {
 export default function ProductCardComponent({ card }: ProductCardProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState('');
+  const dispatch = useAppDispatch();
 
   const basketProducts = useAppSelector(getBasketProducts);
-  const isInBasket = basketProducts.some((product) => product.id === card.id);
+  const isInBasket = basketProducts.some((product) => product.card.id === card.id);
 
   useEffect(() => {
     const currentQuery = searchParams.get('activeTab');
@@ -53,7 +55,7 @@ export default function ProductCardComponent({ card }: ProductCardProps) {
             <span className="visually-hidden">Цена:</span>{card.price.toLocaleString()} ₽
           </p>
           {!isInBasket ?
-            <button className="btn btn--purple" type="button">
+            <button className="btn btn--purple" type="button" onClick={() => dispatch(addProductToBasket(card))}>
               <svg width={24} height={16} aria-hidden="true">
                 <use xlinkHref="#icon-add-basket" />
               </svg>

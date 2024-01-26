@@ -13,7 +13,7 @@ export default function ReviewsSectionComponent({ reviews }: ReviewsSectionProps
   function showMoreComments() {
     const newIndex = reviewsToShow + 3;
     setReviewsToShow(newIndex);
-    setShownStatus(newIndex > reviews.length);
+    setShownStatus(newIndex <= reviews.length);
   }
 
   return (
@@ -29,7 +29,7 @@ export default function ReviewsSectionComponent({ reviews }: ReviewsSectionProps
           <ul className="review-block__list">
             {reviews.slice(0, reviewsToShow).map((review) => <ReviewComponent review={review} key={review.id} />)}
           </ul>
-          {!isShown &&
+          {isShown &&
             <div className="review-block__buttons">
               <button className="btn btn--purple" type="button" onClick={showMoreComments}>
                 Показать больше отзывов

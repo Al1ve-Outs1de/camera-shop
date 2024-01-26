@@ -73,7 +73,11 @@ export default function SimiliarProductsComponent({ similarProducts }: SimiliarP
               </svg>
             </button>
 
-            <PopupCardContainerComponent isActive={isModalActive} onClick={() => setActiveStatus(false)}>
+            <PopupCardContainerComponent
+              isActive={isModalActive}
+              onClick={() => setActiveStatus(false)}
+              cardId={activeCard?.id}
+            >
               {activeCard && <PopupCardComponent card={activeCard} />}
             </PopupCardContainerComponent>
           </div>

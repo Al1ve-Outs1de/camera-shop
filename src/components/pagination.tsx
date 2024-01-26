@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { CARDS_PER_PAGE } from '../consts';
+import { memo } from 'react';
 
 type PaginationProps = {
   cardsPerPage?: number;
@@ -9,7 +10,7 @@ type PaginationProps = {
   currentPage: number;
 }
 
-export default function PaginationComponent({ cardsPerPage = CARDS_PER_PAGE, totalCardsCount, currentPage, onClick }: PaginationProps) {
+function PaginationComponent({ cardsPerPage = CARDS_PER_PAGE, totalCardsCount, currentPage, onClick }: PaginationProps) {
   const pagination: number[] = [];
 
   const totalPages = Math.ceil(totalCardsCount / cardsPerPage);
@@ -62,3 +63,7 @@ export default function PaginationComponent({ cardsPerPage = CARDS_PER_PAGE, tot
     </div>
   );
 }
+
+const memoPagination = memo(PaginationComponent);
+
+export default memoPagination;

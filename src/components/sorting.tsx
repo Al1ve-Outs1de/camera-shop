@@ -10,7 +10,7 @@ export default function SortingComponent() {
                 type="radio"
                 id="sortPrice"
                 name="sort"
-                checked
+                defaultChecked
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
@@ -25,7 +25,7 @@ export default function SortingComponent() {
                 type="radio"
                 id="up"
                 name="sort-icon"
-                checked
+                defaultChecked
                 aria-label="По возрастанию"
               />
               <label htmlFor="up">

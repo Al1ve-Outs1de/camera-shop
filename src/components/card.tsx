@@ -6,17 +6,18 @@ import RatingComponent from './rating';
 import { useAppSelector } from '../hooks';
 import { getBasketProducts } from '../redux/slices/basket/selectors';
 import InBasketButtonComponent from './in-basket-button';
+import { memo } from 'react';
 
 type CatalogCardProps = {
   catalogCard: Card;
   onClick: (id: number) => void;
 }
 
-export default function CardComponent({ catalogCard, onClick }: CatalogCardProps) {
+function CardComponent({ catalogCard, onClick }: CatalogCardProps) {
 
   const productsInBasket = useAppSelector(getBasketProducts);
 
-  const isInBasket = productsInBasket.some((product) => product.id === catalogCard.id);
+  const isInBasket = productsInBasket.some((product) => product.card.id === catalogCard.id);
 
   return (
     <div>
@@ -57,3 +58,7 @@ export default function CardComponent({ catalogCard, onClick }: CatalogCardProps
     </div>
   );
 }
+
+const memoCard = memo(CardComponent, (prev, next) => prev.catalogCard === next.catalogCard);
+
+export default memoCard;

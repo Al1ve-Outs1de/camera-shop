@@ -17,7 +17,7 @@ export default function PopupCardContainerComponent({ isActive, onClick, cardId 
   useEffect(() => {
     document.body.classList.toggle('scroll-lock', isActive);
 
-    const isInBasket = productsInBasket.some((product) => product.id === cardId);
+    const isInBasket = productsInBasket.some((product) => product.card.id === cardId);
 
     modalRef.current?.classList.toggle('modal--narrow', isInBasket);
 
