@@ -6,7 +6,6 @@ import CardComponent from './card';
 import PaginationComponent from './pagination';
 import { useSearchParams } from 'react-router-dom';
 import PopupCardContainerComponent from './popup-card-container';
-import PopupCatalogCardComponent from './popup-card';
 
 export default function CatalogListComponent() {
   const { data: cards = [] } = useGetProductsQuery();
@@ -24,9 +23,6 @@ export default function CatalogListComponent() {
   }, []);
 
   const setActiveCardWithModal = (id: number) => {
-    if (activeCard) {
-      return;
-    }
 
     const currentActiveCard = cards.find((card) => card.id === id);
 
@@ -49,13 +45,13 @@ export default function CatalogListComponent() {
       </div>
       {cards.length > CARDS_PER_PAGE &&
         <PaginationComponent totalCardsCount={cards.length} currentPage={currentPage} onClick={chagePage} />}
-      <PopupCardContainerComponent isActive={isModalActive} onClick={() => {
-        setModalActive(false);
-        setTimeout(() => setActiveCard(null), 300);
-      }} cardId={activeCard?.id}
-      >
-        {activeCard && <PopupCatalogCardComponent card={activeCard} />}
-      </PopupCardContainerComponent>
+      <PopupCardContainerComponent
+        isActive={isModalActive}
+        onClick={() => {
+          setModalActive(false);
+        }}
+        card={activeCard}
+      />
     </>
   );
 }

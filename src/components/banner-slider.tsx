@@ -15,7 +15,6 @@ export default function BannerSliderComponent({ promos }: BannerSliderProps) {
     <Swiper
       modules={[Pagination, Autoplay]}
       slidesPerView={1}
-      // className='banner'
       loop
       autoplay={{
         delay: 3000,

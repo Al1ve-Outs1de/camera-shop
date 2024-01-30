@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Review } from '../types/review.type';
 import ReviewComponent from './review';
+import AddReviewBlockComponent from './add-review-block';
 
 type ReviewsSectionProps = {
   reviews: Review[];
@@ -20,12 +21,7 @@ export default function ReviewsSectionComponent({ reviews }: ReviewsSectionProps
     <div className="page-content__section">
       <section className="review-block">
         <div className="container">
-          <div className="page-content__headed">
-            <h2 className="title title--h3">Отзывы</h2>
-            <button className="btn" type="button">
-              Оставить свой отзыв
-            </button>
-          </div>
+          <AddReviewBlockComponent />
           <ul className="review-block__list">
             {reviews.slice(0, reviewsToShow).map((review) => <ReviewComponent review={review} key={review.id} />)}
           </ul>

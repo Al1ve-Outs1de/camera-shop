@@ -3,16 +3,15 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import type { Card } from '../types/catalog-card.type';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import CardComponent from './card';
 import PopupCardContainerComponent from './popup-card-container';
-import PopupCardComponent from './popup-card';
 
 type SimiliarProductsProps = {
   similarProducts: Card[];
 }
 
-export default function SimiliarProductsComponent({ similarProducts }: SimiliarProductsProps) {
+function SimiliarProductsComponent({ similarProducts }: SimiliarProductsProps) {
   const [isModalActive, setActiveStatus] = useState(false);
   const [activeCard, setActiveCard] = useState<Card | null>(null);
 
@@ -76,13 +75,15 @@ export default function SimiliarProductsComponent({ similarProducts }: SimiliarP
             <PopupCardContainerComponent
               isActive={isModalActive}
               onClick={() => setActiveStatus(false)}
-              cardId={activeCard?.id}
-            >
-              {activeCard && <PopupCardComponent card={activeCard} />}
-            </PopupCardContainerComponent>
+              card={activeCard}
+            />
           </div>
         </div>
       </section>
     </div >
   );
 }
+
+const similarMemo = memo(SimiliarProductsComponent);
+
+export default similarMemo;

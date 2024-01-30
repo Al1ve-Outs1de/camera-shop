@@ -1,16 +1,23 @@
+import { toast } from 'react-toastify';
 import AsideFilterComponent from '../components/aside-filter-form';
 import BannerSliderComponent from '../components/banner-slider';
 import CatalogListComponent from '../components/catalog-list';
 import SortingComponent from '../components/sorting';
 import { useGetProductsQuery, useGetPromosQuery } from '../redux/camerasApi';
+import LoadingSpinner from '../components/loading-spinner';
 
 export default function CatalogPage() {
 
-  const { isLoading: isProductsLoading } = useGetProductsQuery();
-  const { isLoading: isPromosLoading, data: promos } = useGetPromosQuery();
+  const { isLoading: isProductsLoading, isError: productsError } = useGetProductsQuery();
+  const { isLoading: isPromosLoading, data: promos, isError: promosError } = useGetPromosQuery();
 
   if (isProductsLoading || isPromosLoading) {
-    return <main><h1>loading</h1></main>;
+    return <LoadingSpinner />;
+  }
+
+  if (productsError || promosError) {
+    toast.error('Some error occured, please, try again');
+    return <main></main>;
   }
 
   return (

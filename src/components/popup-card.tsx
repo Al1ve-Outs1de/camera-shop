@@ -6,7 +6,7 @@ import ProductImageComponent from './product-image';
 import AddItemSuccess from './add-item-success';
 
 type PopupCatalogCardProps = {
-  card: Card;
+  card: Card | null;
 }
 
 export default function PopupCatalogCardComponent({ card }: PopupCatalogCardProps) {
@@ -20,10 +20,10 @@ export default function PopupCatalogCardComponent({ card }: PopupCatalogCardProp
 
   useEffect(() => () => {
     setAddedStatus(false);
-  }, []);
+  }, [card]);
 
   return (
-    !isAdded ?
+    !isAdded && card ?
       <>
         <p className="title title--h4">Добавить товар в корзину</p>
         <div className="basket-item basket-item--short">

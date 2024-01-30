@@ -5,10 +5,14 @@ import type { BasketProduct } from '../../../types/bakset-product.type';
 
 type basketInitialState = {
   basketProducts: BasketProduct[];
+  discount: number;
+  promo: string;
 };
 
 const initialState: basketInitialState = {
   basketProducts: [],
+  discount: 0,
+  promo: '',
 };
 
 export const basketSlice = createSlice({
@@ -73,6 +77,13 @@ export const basketSlice = createSlice({
         basketProduct.count = count;
       }
     },
+    setDiscount(
+      state,
+      { payload }: PayloadAction<{ discount: number; promo: string }>
+    ) {
+      state.discount = payload.discount;
+      state.promo = payload.promo;
+    },
   },
 });
 
@@ -82,4 +93,5 @@ export const {
   decrementProductCount,
   removeProductFromBasket,
   setProductCount,
+  setDiscount,
 } = basketSlice.actions;

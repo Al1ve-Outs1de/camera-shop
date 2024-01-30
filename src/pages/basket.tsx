@@ -1,9 +1,20 @@
+import { useEffect } from 'react';
 import BasketProductsListComponent from '../components/basket-products-list';
 import BasketSummaryComponent from '../components/basket-summary';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { useScrollToTop } from '../hooks/useScrollToTop';
+import { setDiscount } from '../redux/slices/basket/basket-slice';
 
 export default function BasketPage() {
-  const isBasketNotEmpty = useAppSelector((state) => state.basket.basketProducts).length;
+  const dispatch = useAppDispatch();
+  const isBasketNotEmpty = !!useAppSelector((state) => state.basket.basketProducts).length;
+  useScrollToTop();
+
+  useEffect(() => () => {
+    if (!isBasketNotEmpty) {
+      dispatch(setDiscount({ discount: 0, promo: '' }));
+    }
+  }, [dispatch, isBasketNotEmpty]);
 
   return (
     <main>

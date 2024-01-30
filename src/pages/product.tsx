@@ -5,6 +5,7 @@ import SimiliarProductsComponent from '../components/similiar-products';
 import ReviewsSectionComponent from '../components/reviews-section';
 import { useGetProductReviewsQuery, useGetSimilarProductsQuery, useGetSpecificProductQuery } from '../redux/camerasApi';
 import { AppRoute } from '../consts';
+import LoadingSpinner from '../components/loading-spinner';
 
 export default function ProductPage() {
   const { id: productId } = useParams<{ id: string }>();
@@ -18,7 +19,7 @@ export default function ProductPage() {
   }, []);
 
   if (isProductLoading || isSimilarLoading || isReviewsLoading) {
-    return <main><h1>Loading</h1></main>;
+    return <LoadingSpinner />;
   }
 
   if (isError && 'status' in error && error.status === 404) {

@@ -1,14 +1,15 @@
 import { ChangeEvent, memo } from 'react';
 import { useAppDispatch } from '../hooks';
-import { decrementProductCount, incrementProductCount, removeProductFromBasket, setProductCount } from '../redux/slices/basket/basket-slice';
+import { decrementProductCount, incrementProductCount, setProductCount } from '../redux/slices/basket/basket-slice';
 import { BasketProduct } from '../types/bakset-product.type';
 import ProductImageComponent from './product-image';
 
 type BasketItemProps = {
   item: BasketProduct;
+  onClick: (id: number) => void;
 }
 
-function BasketItemComponent({ item: { card, count } }: BasketItemProps) {
+function BasketItemComponent({ item: { card, count }, onClick }: BasketItemProps) {
   const dispatch = useAppDispatch();
 
   return (
@@ -23,8 +24,8 @@ function BasketItemComponent({ item: { card, count } }: BasketItemProps) {
             <span className="basket-item__article">Артикул:</span>{' '}
             <span className="basket-item__number">{card.vendorCode}</span>
           </li>
-          <li className="basket-item__list-item">{card.category}</li>
-          <li className="basket-item__list-item">{card.level}</li>
+          <li className="basket-item__list-item">{card.type} {card.category}</li>
+          <li className="basket-item__list-item">{card.level} уровень</li>
         </ul>
       </div>
       <p className="basket-item__price">
@@ -70,7 +71,7 @@ function BasketItemComponent({ item: { card, count } }: BasketItemProps) {
         className="cross-btn"
         type="button"
         aria-label="Удалить товар"
-        onClick={() => dispatch(removeProductFromBasket(card.id))}
+        onClick={() => onClick(card.id)}
       >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
