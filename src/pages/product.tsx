@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import ProductCardComponent from '../components/product-card';
-import SimiliarProductsComponent from '../components/similiar-products';
-import ReviewsSectionComponent from '../components/reviews-section';
+import ProductCardComponent from '../components/product-card/product-card';
+import SimiliarProductsComponent from '../components/similar-products/similiar-products';
+import ReviewsSectionComponent from '../components/reviews-section/reviews-section';
 import { useGetProductReviewsQuery, useGetSimilarProductsQuery, useGetSpecificProductQuery } from '../redux/camerasApi';
 import { AppRoute } from '../consts';
-import LoadingSpinner from '../components/loading-spinner';
+import LoadingSpinner from '../components/loading-spinner/loading-spinner';
 
 export default function ProductPage() {
   const { id: productId } = useParams<{ id: string }>();

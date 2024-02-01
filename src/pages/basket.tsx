@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import BasketProductsListComponent from '../components/basket-products-list';
-import BasketSummaryComponent from '../components/basket-summary';
+import BasketProductsListComponent from '../components/basket-products-list/basket-products-list';
+import BasketSummaryComponent from '../components/basket-summary/basket-summary';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useScrollToTop } from '../hooks/useScrollToTop';
 import { setDiscount } from '../redux/slices/basket/basket-slice';
