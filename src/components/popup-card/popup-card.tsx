@@ -7,9 +7,10 @@ import AddItemSuccess from '../add-item-success/add-item-success';
 
 type PopupCatalogCardProps = {
   card: Card | null;
+  onClick: () => void;
 }
 
-export default function PopupCatalogCardComponent({ card }: PopupCatalogCardProps) {
+export default function PopupCatalogCardComponent({ card, onClick }: PopupCatalogCardProps) {
   const dispatch = useAppDispatch();
   const [isAdded, setAddedStatus] = useState(false);
 
@@ -58,6 +59,6 @@ export default function PopupCatalogCardComponent({ card }: PopupCatalogCardProp
           </button>
         </div>
       </>
-      : <AddItemSuccess />
+      : <AddItemSuccess onClick={onClick} />
   );
 }

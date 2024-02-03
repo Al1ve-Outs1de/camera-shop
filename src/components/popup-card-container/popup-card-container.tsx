@@ -25,7 +25,7 @@ export default function PopupCardContainerComponent({ isActive, onClick, card }:
 
   return (
     <ModalLayoutComponent isActive={isActive} onClick={onClick} modalRef={modalRef}>
-      <PopupCatalogCardComponent card={card} />
+      <PopupCatalogCardComponent card={card} onClick={onClick} />
     </ModalLayoutComponent>
   );
 }

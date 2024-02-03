@@ -3,8 +3,8 @@ import AddItemSuccess from './add-item-success';
 import { withRouter } from '../../utils/mock-component';
 
 it('AddItem rendering', () => {
-  render(withRouter(<AddItemSuccess />));
+  render(withRouter(<AddItemSuccess onClick={vi.fn()} />));
 
   expect(screen.getByText(/Товар успешно добавлен в корзину/i)).toBeInTheDocument();
-  expect(screen.getAllByRole('link').length).toBe(2);
+  expect(screen.getByRole('link')).toBeInTheDocument();
 });

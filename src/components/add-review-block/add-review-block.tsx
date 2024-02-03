@@ -15,7 +15,7 @@ const addReviewBlockComponent = memo(() => {
         </button>
       </div>
       <ModalLayoutComponent isActive={isModalActive} onClick={toggleActive}>
-        <FormPopupComponent isActive={isModalActive} />
+        <FormPopupComponent isActive={isModalActive} onClick={toggleActive} />
       </ModalLayoutComponent>
     </>
   );

@@ -10,9 +10,10 @@ import { toast } from 'react-toastify';
 
 type FormPopupProps = {
   isActive: boolean;
+  onClick: () => void;
 }
 
-export default function FormPopupComponent({ isActive }: FormPopupProps) {
+export default function FormPopupComponent({ isActive, onClick }: FormPopupProps) {
   const { id: productId } = useParams();
   const [isFormSubmitted, setSubmitted] = useState(false);
   const [createReview] = useCreateNewReviewMutation();
@@ -217,14 +218,9 @@ export default function FormPopupComponent({ isActive }: FormPopupProps) {
           <use xlinkHref="#icon-review-success"></use>
         </svg>
         <div className="modal__buttons">
-          <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button">Вернуться к покупкам
+          <button onClick={onClick} className="btn btn--purple modal__btn modal__btn--fit-width" type="button">Вернуться к покупкам
           </button>
         </div>
-        <button className="cross-btn" type="button" aria-label="Закрыть попап">
-          <svg width="10" height="10" aria-hidden="true">
-            <use xlinkHref="#icon-close"></use>
-          </svg>
-        </button>
       </>
   );
 }

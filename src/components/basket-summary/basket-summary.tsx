@@ -89,12 +89,12 @@ export default function BasketSummaryComponent() {
         <div className="basket__summary-order">
           <p className="basket__summary-item">
             <span className="basket__summary-text">Всего:</span>
-            <span className="basket__summary-value">{totalPrice} ₽</span>
+            <span className="basket__summary-value">{totalPrice.toLocaleString()} ₽</span>
           </p>
           <p className="basket__summary-item">
             <span className="basket__summary-text">Скидка:</span>
             <span className="basket__summary-value basket__summary-value--bonus">
-              {discountValue} ₽
+              {discountValue.toLocaleString()} ₽
             </span>
           </p>
           <p className="basket__summary-item">
@@ -102,7 +102,7 @@ export default function BasketSummaryComponent() {
               К оплате:
             </span>
             <span className="basket__summary-value basket__summary-value--total">
-              {totalPrice - discountValue} ₽
+              {(totalPrice - discountValue).toLocaleString()} ₽
             </span>
           </p>
           <button className="btn btn--purple" type="submit" onClick={submitNewOrder} disabled={isLoading}>
