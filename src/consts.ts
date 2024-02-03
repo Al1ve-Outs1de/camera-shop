@@ -1,5 +1,7 @@
-export const SERVER_BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro';
+export const SERVER_BASE_URL =
+  'https://camera-shop.accelerator.htmlacademy.pro';
 export const CARDS_PER_PAGE = 9;
+export const NETWORK_ERROR_MESSAGE = 'Some error occured, please, try again';
 
 export const CardActiveTab = {
   Description: 'description',

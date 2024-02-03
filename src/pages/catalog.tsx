@@ -5,6 +5,7 @@ import CatalogListComponent from '../components/catalog-list/catalog-list';
 import SortingComponent from '../components/sorting/sorting';
 import { useGetProductsQuery, useGetPromosQuery } from '../redux/camerasApi';
 import LoadingSpinner from '../components/loading-spinner/loading-spinner';
+import { NETWORK_ERROR_MESSAGE } from '../consts';
 
 export default function CatalogPage() {
 
@@ -16,7 +17,7 @@ export default function CatalogPage() {
   }
 
   if (productsError || promosError) {
-    toast.error('Some error occured, please, try again');
+    toast.error(NETWORK_ERROR_MESSAGE);
     return <main></main>;
   }
 

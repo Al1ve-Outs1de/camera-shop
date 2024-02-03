@@ -1,9 +1,9 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import './swiper-pagination.css';
 import SlideComponent from '../slide/slide';
 import { Autoplay, Pagination } from 'swiper/modules';
-import { CSSProperties } from 'react';
 import type { Promo } from '../../types/promo.type';
 
 type BannerSliderProps = {
@@ -22,7 +22,6 @@ export default function BannerSliderComponent({ promos }: BannerSliderProps) {
       }}
       speed={2000}
       pagination={{ clickable: true }}
-      style={{ '--swiper-pagination-bullet-size': '16px' } as CSSProperties}
     >
       {promos.map((promo) => <SwiperSlide key={promo.id}><SlideComponent promo={promo} /></SwiperSlide>)}
     </Swiper>

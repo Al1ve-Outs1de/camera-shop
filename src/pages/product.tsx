@@ -4,15 +4,16 @@ import ProductCardComponent from '../components/product-card/product-card';
 import SimiliarProductsComponent from '../components/similar-products/similiar-products';
 import ReviewsSectionComponent from '../components/reviews-section/reviews-section';
 import { useGetProductReviewsQuery, useGetSimilarProductsQuery, useGetSpecificProductQuery } from '../redux/camerasApi';
-import { AppRoute } from '../consts';
+import { AppRoute, NETWORK_ERROR_MESSAGE } from '../consts';
 import LoadingSpinner from '../components/loading-spinner/loading-spinner';
+import { toast } from 'react-toastify';
 
 export default function ProductPage() {
   const { id: productId } = useParams<{ id: string }>();
 
-  const { isLoading: isProductLoading, data: product, isError, error } = useGetSpecificProductQuery(productId as string);
-  const { isLoading: isSimilarLoading, data: similarProducts = [] } = useGetSimilarProductsQuery(productId as string);
-  const { isLoading: isReviewsLoading, data: reviews = [] } = useGetProductReviewsQuery(productId as string);
+  const { isLoading: isProductLoading, data: product, isError: productError, error } = useGetSpecificProductQuery(productId as string);
+  const { isLoading: isSimilarLoading, data: similarProducts = [], isError: similarProductsError } = useGetSimilarProductsQuery(productId as string);
+  const { isLoading: isReviewsLoading, data: reviews = [], isError: productReviewsError } = useGetProductReviewsQuery(productId as string);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -22,8 +23,13 @@ export default function ProductPage() {
     return <LoadingSpinner />;
   }
 
-  if (isError && 'status' in error && error.status === 404) {
+  if (error && 'status' in error && error.status === 404) {
     return <Navigate to={AppRoute.Error} replace />;
+  }
+
+  if (productError || similarProductsError || productReviewsError) {
+    toast.error(NETWORK_ERROR_MESSAGE);
+    return <main></main>;
   }
 
   return (
