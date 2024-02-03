@@ -4,7 +4,7 @@ import { withStore } from '../../utils/mock-component';
 
 it('FormPopup rendering', () => {
 
-  const { withStoreComponent } = withStore(<FormPopupComponent isActive />);
+  const { withStoreComponent } = withStore(<FormPopupComponent isActive onClick={vi.fn()} />);
 
   render(withStoreComponent);
 

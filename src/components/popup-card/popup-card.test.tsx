@@ -6,7 +6,7 @@ import { makeFakeCard } from '../../utils/mocks';
 it('PopupCard rendering', () => {
   const mockCard = makeFakeCard();
 
-  const { withStoreComponent } = withStore(<PopupCatalogCardComponent card={mockCard} />);
+  const { withStoreComponent } = withStore(<PopupCatalogCardComponent card={mockCard} onClick={vi.fn()} />);
 
   render(withStoreComponent);
 
