@@ -1,11 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
 import { AppRoute } from '../../consts';
 import { useAppSelector } from '../../hooks';
+import { getBasketProducts } from '../../redux/slices/basket/selectors';
 
 export default function HeaderComponent() {
   const location = useLocation().pathname;
 
-  const basketProductsCount = useAppSelector((state) => state.basket.basketProducts.length);
+  const basketProductsCount = useAppSelector(getBasketProducts).length;
 
   return (
     <header className="header" id="header">

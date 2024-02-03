@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import type { Card } from '../../../types/catalog-card.type';
 import type { BasketProduct } from '../../../types/bakset-product.type';
 
-type basketInitialState = {
+export type basketInitialState = {
   basketProducts: BasketProduct[];
   discount: number;
   promo: string;

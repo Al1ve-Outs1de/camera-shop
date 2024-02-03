@@ -4,10 +4,11 @@ import BasketSummaryComponent from '../components/basket-summary/basket-summary'
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { useScrollToTop } from '../hooks/useScrollToTop';
 import { setDiscount } from '../redux/slices/basket/basket-slice';
+import { getBasketProducts } from '../redux/slices/basket/selectors';
 
 export default function BasketPage() {
   const dispatch = useAppDispatch();
-  const isBasketNotEmpty = !!useAppSelector((state) => state.basket.basketProducts).length;
+  const isBasketNotEmpty = !!useAppSelector(getBasketProducts).length;
   useScrollToTop();
 
   useEffect(() => () => {

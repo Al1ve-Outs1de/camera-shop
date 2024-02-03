@@ -9,12 +9,13 @@ import AddOrderSuccess from '../add-order-success/add-order-success';
 import { useModal } from '../../hooks/useModal';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { toast } from 'react-toastify';
+import { getBasketDiscount, getBasketProducts, getPromo } from '../../redux/slices/basket/selectors';
 
 export default function BasketSummaryComponent() {
   const dispatch = useAppDispatch();
-  const basketProducts = useAppSelector((state) => state.basket.basketProducts);
-  const discout = useAppSelector((state) => state.basket.discount);
-  const promo = useAppSelector((state) => state.basket.promo);
+  const basketProducts = useAppSelector(getBasketProducts);
+  const discout = useAppSelector(getBasketDiscount);
+  const promo = useAppSelector(getPromo);
   const [getCoupon] = useGetCouponPromoMutation();
   const [createNewOrder, { isLoading }] = useCreateNewOrderMutation();
   const [isModalAcitve, toggleActive] = useModal();

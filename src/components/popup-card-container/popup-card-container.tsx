@@ -3,6 +3,7 @@ import { useAppSelector } from '../../hooks';
 import ModalLayoutComponent from '../modal-layout/modal-layout';
 import PopupCatalogCardComponent from '../popup-card/popup-card';
 import { Card } from '../../types/catalog-card.type';
+import { getBasketProducts } from '../../redux/slices/basket/selectors';
 
 type PopupContainerProps = {
   isActive: boolean;
@@ -12,7 +13,7 @@ type PopupContainerProps = {
 
 export default function PopupCardContainerComponent({ isActive, onClick, card }: PopupContainerProps) {
   const modalRef = useRef<HTMLDivElement>(null);
-  const productsInBasket = useAppSelector((state) => state.basket.basketProducts);
+  const productsInBasket = useAppSelector(getBasketProducts);
 
   useEffect(() => {
 
