@@ -6,7 +6,7 @@ import { useCreateNewOrderMutation, useGetCouponPromoMutation } from '../../redu
 import type { NewOrder } from '../../types/new-order.type';
 import ModalLayoutComponent from '../modal-layout/modal-layout';
 import AddOrderSuccess from '../add-order-success/add-order-success';
-import { useModal } from '../../hooks/useModal';
+import { useModal } from '../../hooks/use-modal';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { toast } from 'react-toastify';
 import { getBasketDiscount, getBasketProducts, getPromo } from '../../redux/slices/basket/selectors';

@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import FormPopupComponent from '../form-popup/form-popup';
 import ModalLayoutComponent from '../modal-layout/modal-layout';
-import { useModal } from '../../hooks/useModal';
+import { useModal } from '../../hooks/use-modal';
 
 const addReviewBlockComponent = memo(() => {
   const [isModalActive, toggleActive] = useModal();
