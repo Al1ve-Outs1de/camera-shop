@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import CatalogPage from '../../pages/catalog';
+import CatalogPage from '../../pages/catalog/catalog';
 import { AppRoute } from '../../consts';
 import Layout from '../layout/layout';
-import ProductPage from '../../pages/product';
-import BasketPage from '../../pages/basket';
-import ErrorPage from '../../pages/error';
+import ProductPage from '../../pages/product/product';
+import BasketPage from '../../pages/basket/basket';
+import ErrorPage from '../../pages/error/error';
 
 export default function App() {
   return (

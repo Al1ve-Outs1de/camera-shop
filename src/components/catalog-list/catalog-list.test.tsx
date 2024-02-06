@@ -1,12 +1,17 @@
-import { render, screen } from '@testing-library/react';
-import { withRouter, withStore } from '../../utils/mock-component';
+import { render, screen, waitFor } from '@testing-library/react';
+import { withRouter } from '../../utils/mock-component';
 import CatalogListComponent from './catalog-list';
+import { makeFakeCard } from '../../utils/mocks';
+import { Provider } from 'react-redux';
+import { store } from '../../redux/store';
 
-it('CatalogList rendering', () => {
+const mockCards = Array.from({ length: 10 }, () => makeFakeCard());
 
-  const { withStoreComponent } = withStore(<CatalogListComponent />);
+it('CatalogList rendering', async () => {
+  fetchMock.mockResponse(JSON.stringify(mockCards));
+  render(withRouter(<Provider store={store}><CatalogListComponent /></Provider>));
 
-  render(withRouter(withStoreComponent));
-
-  expect(screen.getAllByTestId('card-item')).toHaveLength(9);
+  await waitFor(async () => {
+    expect(await screen.findAllByTestId('card-item')).toHaveLength(9);
+  });
 });

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import BasketProductsListComponent from '../components/basket-products-list/basket-products-list';
-import BasketSummaryComponent from '../components/basket-summary/basket-summary';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { useScrollToTop } from '../hooks/use-scroll-to-top';
-import { setDiscount } from '../redux/slices/basket/basket-slice';
-import { getBasketProducts } from '../redux/slices/basket/selectors';
+import BasketProductsListComponent from '../../components/basket-products-list/basket-products-list';
+import BasketSummaryComponent from '../../components/basket-summary/basket-summary';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useScrollToTop } from '../../hooks/use-scroll-to-top';
+import { setDiscount } from '../../redux/slices/basket/basket-slice';
+import { getBasketProducts } from '../../redux/slices/basket/selectors';
 
 export default function BasketPage() {
   const dispatch = useAppDispatch();

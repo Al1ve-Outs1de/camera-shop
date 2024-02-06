@@ -1,11 +1,11 @@
 import { toast } from 'react-toastify';
-import AsideFilterComponent from '../components/aside-filter-form/aside-filter-form';
-import BannerSliderComponent from '../components/banner-slider/banner-slider';
-import CatalogListComponent from '../components/catalog-list/catalog-list';
-import SortingComponent from '../components/sorting/sorting';
-import { useGetProductsQuery, useGetPromosQuery } from '../redux/camerasApi';
-import LoadingSpinner from '../components/loading-spinner/loading-spinner';
-import { NETWORK_ERROR_MESSAGE } from '../consts';
+import AsideFilterComponent from '../../components/aside-filter-form/aside-filter-form';
+import BannerSliderComponent from '../../components/banner-slider/banner-slider';
+import CatalogListComponent from '../../components/catalog-list/catalog-list';
+import SortingComponent from '../../components/sorting/sorting';
+import { useGetProductsQuery, useGetPromosQuery } from '../../redux/camerasApi';
+import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
+import { NETWORK_ERROR_MESSAGE } from '../../consts';
 
 export default function CatalogPage() {
 

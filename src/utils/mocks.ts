@@ -2,6 +2,7 @@ import { BasketProduct } from '../types/bakset-product.type';
 import { faker } from '@faker-js/faker';
 import type { Card } from '../types/catalog-card.type';
 import type { Review } from '../types/review.type';
+import { Promo } from '../types/promo.type';
 
 export const makeFakeCard = (): Card => ({
   id: faker.number.int(),
@@ -29,6 +30,15 @@ export const makeFakeReview = (): Review => ({
   rating: faker.number.int({ min: 1, max: 5 }),
   review: faker.lorem.paragraph(),
   userName: faker.internet.displayName(),
+});
+
+export const makeFakePromo = (): Promo => ({
+  id: faker.number.int(),
+  name: faker.commerce.productName(),
+  previewImg: faker.image.url(),
+  previewImg2x: faker.image.url(),
+  previewImgWebp: faker.image.url(),
+  previewImgWebp2x: faker.image.url(),
 });
 
 export const makeFakeBasketProduct = (): BasketProduct => ({

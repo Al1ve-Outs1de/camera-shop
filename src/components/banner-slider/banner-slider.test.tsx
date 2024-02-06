@@ -3,7 +3,7 @@ import BannerSliderComponent from './banner-slider';
 import { makeFakeCard } from '../../utils/mocks';
 import { withRouter } from '../../utils/mock-component';
 
-test('BannerSlider rendering', () => {
+it('BannerSlider rendering', () => {
 
   const mockPromoCards = Array.from({ length: 4 }, () => makeFakeCard());
 

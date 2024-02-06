@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../consts';
+import { AppRoute } from '../../consts';
 
 export default function ErrorPage() {
   return (
