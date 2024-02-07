@@ -8,7 +8,7 @@ type ReviewProps = {
 
 const reviewComponent = memo(({ review }: ReviewProps) => {
   const date = new Date(review.createAt);
-  const dateToShow = date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+  const dateToShow = date.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long' });
   const dateForTag = date.toLocaleDateString('en-CA');
 
   return (

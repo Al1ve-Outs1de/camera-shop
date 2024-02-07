@@ -2,6 +2,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import './similar-products.css';
 import type { Card } from '../../types/catalog-card.type';
 import { memo, useState } from 'react';
 import CardComponent from '../card/card';
@@ -52,7 +53,6 @@ const similarProductsComponent = memo(({ similarProducts }: SimiliarProductsProp
 
             <button
               className="slider-controls slider-controls--prev"
-              style={{ pointerEvents: 'auto' }}
               type="button"
               aria-label="Предыдущий слайд"
             >
@@ -65,7 +65,6 @@ const similarProductsComponent = memo(({ similarProducts }: SimiliarProductsProp
               className="slider-controls slider-controls--next"
               type='button'
               aria-label="Следующий слайд"
-              style={{ pointerEvents: 'auto' }}
             >
               <svg width={7} height={12} aria-hidden="true">
                 <use xlinkHref="#icon-arrow" />

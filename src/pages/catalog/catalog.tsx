@@ -5,7 +5,8 @@ import CatalogListComponent from '../../components/catalog-list/catalog-list';
 import SortingComponent from '../../components/sorting/sorting';
 import { useGetProductsQuery, useGetPromosQuery } from '../../redux/camerasApi';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
-import { NETWORK_ERROR_MESSAGE } from '../../consts';
+import { AppRoute, NETWORK_ERROR_MESSAGE } from '../../consts';
+import { Link } from 'react-router-dom';
 
 export default function CatalogPage() {
 
@@ -29,17 +30,17 @@ export default function CatalogPage() {
           <div className="container">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link" href="index.html">
+                <Link className="breadcrumbs__link" to={AppRoute.Root}>
                   Главная
                   <svg width={5} height={8} aria-hidden="true">
                     <use xlinkHref="#icon-arrow-mini" />
                   </svg>
-                </a>
+                </Link>
               </li>
               <li className="breadcrumbs__item">
-                <span className="breadcrumbs__link breadcrumbs__link--active">
+                <Link className="breadcrumbs__link breadcrumbs__link--active" to={AppRoute.Root}>
                   Каталог
-                </span>
+                </Link>
               </li>
             </ul>
           </div>

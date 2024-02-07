@@ -1,0 +1,7 @@
+.slider-controls:active {
+  pointer-events: auto;
+}
+
+.swiper-button-disabled {
+  pointer-events: none;
+}

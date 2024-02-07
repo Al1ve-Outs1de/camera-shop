@@ -142,7 +142,7 @@ export default function FormPopupComponent({ isActive, onClick }: FormPopupProps
                     })}
                   />
                 </label>
-                {errors['user-name'] && <p className="custom-input__error">Нужно указать имя</p>}
+                {errors['user-name'] && <p className="custom-input__error">Имя от 2 до 15 символов</p>}
               </div>
               <div className={classNames('custom-input form-review__item', { 'is-invalid': errors['user-plus'] })}>
                 <label>
@@ -162,7 +162,7 @@ export default function FormPopupComponent({ isActive, onClick }: FormPopupProps
                     })}
                   />
                 </label>
-                {errors['user-plus'] && <p className="custom-input__error">Нужно указать достоинства</p>}
+                {errors['user-plus'] && <p className="custom-input__error">Количество символов от 10 до 160</p>}
               </div>
               <div className={classNames('custom-input form-review__item', { 'is-invalid': errors['user-minus'] })}>
                 <label>
@@ -182,7 +182,7 @@ export default function FormPopupComponent({ isActive, onClick }: FormPopupProps
                     })}
                   />
                 </label>
-                {errors['user-minus'] && <p className="custom-input__error">Нужно указать недостатки</p>}
+                {errors['user-minus'] && <p className="custom-input__error">Количество символов от 10 до 160</p>}
               </div>
               <div className={classNames('custom-textarea form-review__item', { 'is-invalid': errors['user-comment'] })}>
                 <label>
@@ -202,7 +202,7 @@ export default function FormPopupComponent({ isActive, onClick }: FormPopupProps
                     })}
                   />
                 </label>
-                {errors['user-comment'] && <div className="custom-textarea__error">Нужно добавить комментарий</div>}
+                {errors['user-comment'] && <div className="custom-textarea__error">Количество символов от 10 до 160</div>}
               </div>
             </div>
             <button className="btn btn--purple form-review__btn" type="submit" disabled={isSubmitting}>

@@ -1,10 +1,12 @@
 :root {
   --swiper-pagination-bullet-size: 16px;
   --swiper-pagination-color: #7575e2;
-  --swiper-pagination-bullet-inactive-opacity: 0.7;
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-inactive-color: rgb(244, 244, 252);
+  --swiper-pagination-bullet-horizontal-gap: 7px;
 }
 
 .swiper-pagination {
   text-align: right;
-  padding-right: 50px;
+  padding-right: 40px;
 }

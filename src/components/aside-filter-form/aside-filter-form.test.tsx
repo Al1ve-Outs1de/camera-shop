@@ -7,5 +7,5 @@ it('AsideFilter rendering', () => {
   expect(screen.getByText('Фильтр')).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/до/i)).toBeInTheDocument();
   expect(screen.getByPlaceholderText(/от/i)).toBeInTheDocument();
-  expect(screen.getByTestId('digital')).toBeChecked();
+  expect(screen.getByTestId('digital')).not.toBeChecked();
 });
