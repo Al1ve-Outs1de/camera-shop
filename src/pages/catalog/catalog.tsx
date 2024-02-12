@@ -1,12 +1,10 @@
 import { toast } from 'react-toastify';
-import AsideFilterComponent from '../../components/aside-filter-form/aside-filter-form';
 import BannerSliderComponent from '../../components/banner-slider/banner-slider';
-import CatalogListComponent from '../../components/catalog-list/catalog-list';
-import SortingComponent from '../../components/sorting/sorting';
 import { useGetProductsQuery, useGetPromosQuery } from '../../redux/camerasApi';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
 import { AppRoute, NETWORK_ERROR_MESSAGE } from '../../consts';
 import { Link } from 'react-router-dom';
+import CatalogContentComponent from '../../components/catalog-content';
 
 export default function CatalogPage() {
 
@@ -48,15 +46,7 @@ export default function CatalogPage() {
         <section className="catalog">
           <div className="container">
             <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
-            <div className="page-content__columns">
-              <div className="catalog__aside">
-                <AsideFilterComponent />
-              </div>
-              <div className="catalog__content">
-                <SortingComponent />
-                <CatalogListComponent />
-              </div>
-            </div>
+            <CatalogContentComponent />
           </div>
         </section>
       </div>

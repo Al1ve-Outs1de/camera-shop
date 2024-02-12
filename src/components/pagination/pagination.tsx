@@ -10,7 +10,7 @@ type PaginationProps = {
   currentPage: number;
 }
 
-const paginationComponent = memo(({ cardsPerPage = CARDS_PER_PAGE, totalCardsCount, currentPage, onClick }: PaginationProps) => {
+const paginationComponent = memo(({ cardsPerPage = CARDS_PER_PAGE, totalCardsCount, currentPage = 1, onClick }: PaginationProps) => {
   const pagination: number[] = [];
 
   const totalPages = Math.ceil(totalCardsCount / cardsPerPage);
@@ -31,7 +31,10 @@ const paginationComponent = memo(({ cardsPerPage = CARDS_PER_PAGE, totalCardsCou
             <Link
               className="pagination__link pagination__link--text"
               to='#'
-              onClick={() => onClick(startPage - 1)}
+              onClick={(evt) => {
+                evt.preventDefault();
+                onClick(startPage - 1);
+              }}
             >
               Назад
             </Link>
@@ -42,7 +45,10 @@ const paginationComponent = memo(({ cardsPerPage = CARDS_PER_PAGE, totalCardsCou
             <Link
               className={classNames('pagination__link', { 'pagination__link--active': number === currentPage })}
               to='#'
-              onClick={() => onClick(number)}
+              onClick={(evt) => {
+                evt.preventDefault();
+                onClick(number);
+              }}
             >
               {number}
             </Link>
@@ -54,7 +60,10 @@ const paginationComponent = memo(({ cardsPerPage = CARDS_PER_PAGE, totalCardsCou
             <Link
               className="pagination__link pagination__link--text"
               to='#'
-              onClick={() => onClick(endPage + 1)}
+              onClick={(evt) => {
+                evt.preventDefault();
+                onClick(endPage + 1);
+              }}
             >
               Далее
             </Link>

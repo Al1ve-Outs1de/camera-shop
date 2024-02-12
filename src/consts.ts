@@ -8,6 +8,16 @@ export const CardActiveTab = {
   Characteristics: 'characteristics',
 };
 
+export const SortingActiveType = {
+  ByPrice: 'sortPrice',
+  ByPopular: 'sortPopular',
+};
+
+export const SortingActiveOrder = {
+  ToUp: 'up',
+  ToDown: 'down',
+};
+
 export enum AppRoute {
   Root = '/',
   Product = '/product',
