@@ -1,17 +1,20 @@
 import { ChangeEvent, memo } from 'react';
 import { CyrillicCategory, CyrillicLevel, CyrillicType } from '../../consts';
-import { FilterStateType } from '../../types/filter-state.type';
+import { useSearchParams } from 'react-router-dom';
 
 type AsideFilterProps = {
   onCategoryChange: (categoryCheckBox: HTMLInputElement) => void;
   onTypeChange: (name: string) => void;
   onLevelChange: (name: string) => void;
   onResetClick: () => void;
-  filterState: FilterStateType;
 }
 
 const asideFilterComponent = memo(
-  ({ onCategoryChange, onLevelChange, onTypeChange, onResetClick, filterState }: AsideFilterProps) => {
+  ({ onCategoryChange, onLevelChange, onTypeChange, onResetClick }: AsideFilterProps) => {
+
+    const [searchParams] = useSearchParams();
+
+    const { filterType = '', filterLevel = '', filterCategory = '' } = Object.fromEntries([...searchParams]);
 
     function handleCategoryChange(evt: ChangeEvent<HTMLInputElement>) {
       onCategoryChange(evt.target);
@@ -55,7 +58,7 @@ const asideFilterComponent = memo(
                 <input
                   type="checkbox"
                   name="photocamera"
-                  checked={filterState.category === CyrillicCategory.photocamera}
+                  checked={filterCategory === CyrillicCategory.photocamera}
                   onChange={handleCategoryChange}
                 />
                 <span className="custom-checkbox__icon" />
@@ -68,7 +71,7 @@ const asideFilterComponent = memo(
               <label>
                 <input type="checkbox" name="videocamera"
                   onChange={handleCategoryChange}
-                  checked={filterState.category === CyrillicCategory.videocamera}
+                  checked={filterCategory === CyrillicCategory.videocamera}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
@@ -86,7 +89,7 @@ const asideFilterComponent = memo(
                   name="digital"
                   data-testId='digital'
                   onChange={handleTypeChange}
-                  checked={filterState.type.includes(CyrillicType.digital)}
+                  checked={filterType.includes(CyrillicType.digital)}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">Цифровая</span>
@@ -95,9 +98,9 @@ const asideFilterComponent = memo(
             <div className="custom-checkbox catalog-filter__item">
               <label>
                 <input type="checkbox" name="film"
-                  disabled={filterState.category === CyrillicCategory.videocamera}
+                  disabled={filterCategory === CyrillicCategory.videocamera}
                   onChange={handleTypeChange}
-                  checked={filterState.type.includes(CyrillicType.film)}
+                  checked={filterType.includes(CyrillicType.film)}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
@@ -108,9 +111,9 @@ const asideFilterComponent = memo(
             <div className="custom-checkbox catalog-filter__item">
               <label>
                 <input type="checkbox" name="snapshot"
-                  disabled={filterState.category === CyrillicCategory.videocamera}
+                  disabled={filterCategory === CyrillicCategory.videocamera}
                   onChange={handleTypeChange}
-                  checked={filterState.type.includes(CyrillicType.snapshot)}
+                  checked={filterType.includes(CyrillicType.snapshot)}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
@@ -124,7 +127,7 @@ const asideFilterComponent = memo(
                   type="checkbox"
                   name="collection"
                   onChange={handleTypeChange}
-                  checked={filterState.type.includes(CyrillicType.collection)}
+                  checked={filterType.includes(CyrillicType.collection)}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
@@ -139,7 +142,7 @@ const asideFilterComponent = memo(
               <label>
                 <input type="checkbox" name="zero"
                   onChange={handleLevelChange}
-                  checked={filterState.level.includes(CyrillicLevel.zero)}
+                  checked={filterLevel.includes(CyrillicLevel.zero)}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">Нулевой</span>
@@ -149,7 +152,7 @@ const asideFilterComponent = memo(
               <label>
                 <input type="checkbox" name="non-professional"
                   onChange={handleLevelChange}
-                  checked={filterState.level.includes(CyrillicLevel['non-professional'])}
+                  checked={filterLevel.includes(CyrillicLevel['non-professional'])}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
@@ -161,7 +164,7 @@ const asideFilterComponent = memo(
               <label>
                 <input type="checkbox" name="professional"
                   onChange={handleLevelChange}
-                  checked={filterState.level.includes(CyrillicLevel.professional)}
+                  checked={filterLevel.includes(CyrillicLevel.professional)}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">

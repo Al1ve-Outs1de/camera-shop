@@ -7,7 +7,7 @@ import { CARDS_PER_PAGE, CyrillicCategory, CyrillicLevel, CyrillicType, SortingA
 import { useGetProductsQuery } from '../redux/camerasApi';
 import { filterCatalog, sortingCards, toggleArrayElement } from '../utils/utils';
 import { Card } from '../types/catalog-card.type';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 export default function CatalogContentComponent() {
   const [searchParams, setSearchParams] = useSearchParams(
@@ -19,12 +19,10 @@ export default function CatalogContentComponent() {
       filterType: '',
       filterLevel: ''
     });
-  const [filterState, setFilterState] = useState({ category: '', type: [] as string[], level: [] as string[] });
+
   const { data: cards = [] } = useGetProductsQuery();
 
-  const {
-    page: currentPage,
-    sortingType, sortingOrder } = Object.fromEntries([...searchParams]);
+  const { page: currentPage, sortingType, sortingOrder, filterType, filterLevel, filterCategory } = Object.fromEntries([...searchParams]);
 
   const changePage = useCallback((pageNumber: number) => {
     setSearchParams((prevParams) => {
@@ -51,40 +49,58 @@ export default function CatalogContentComponent() {
 
     const categoryName = inputCategoryCheckbox.checked ? CyrillicCategory[inputCategoryName] : '';
 
-    let currentTypeFilters = filterState.type;
+    let currentTypeFilters = filterType.split('-');
 
     if (categoryName === CyrillicCategory.videocamera) {
       currentTypeFilters = currentTypeFilters.filter((type) => type !== CyrillicType.snapshot && type !== CyrillicType.film);
     }
 
-    setFilterState({ ...filterState, category: categoryName, type: currentTypeFilters });
+    setSearchParams((prevParams) => {
+      prevParams.set('filterCategory', categoryName);
+      prevParams.set('filterType', currentTypeFilters.join('-'));
 
-    // setSearchParams((prevParams) => {
-    //   prevParams.set('category', categoryName);
-    //   prevParams.set('filterType', JSON.stringify(currentTypeFilters));
-
-    //   return prevParams;
-    // });
+      return prevParams;
+    }, { replace: true });
   }
 
   function changeType(typeName: string) {
     const cyrillicTypeName = CyrillicType[typeName];
-    const newTypeArr = toggleArrayElement(filterState.type, cyrillicTypeName);
+    const newTypeArr = toggleArrayElement(filterType ? filterType.split('-') : [], cyrillicTypeName).join('-');
 
-    setFilterState({ ...filterState, type: newTypeArr });
+    setSearchParams((prevParams) => {
+      prevParams.set('filterType', newTypeArr);
+      return prevParams;
+    }, { replace: true });
   }
 
   function changeLevel(levelName: string) {
     const cyrillicLevelName = CyrillicLevel[levelName];
-    const newLevelArr = toggleArrayElement(filterState.level, cyrillicLevelName);
-    setFilterState({ ...filterState, level: newLevelArr });
+    const newLevelArr = toggleArrayElement(filterLevel ? filterLevel.split('-') : [], cyrillicLevelName).join('-');
+    setSearchParams((prevParams) => {
+      prevParams.set('filterLevel', newLevelArr);
+      return prevParams;
+    }, { replace: true });
   }
 
   function resetFilters() {
-    setFilterState({ category: '', level: [], type: [] });
+    setSearchParams((prevParams) => {
+      prevParams.set('filterCategory', '');
+      prevParams.set('filterType', '');
+      prevParams.set('filterLevel', '');
+
+      return prevParams;
+    }, { replace: true });
   }
 
-  let finalCards: Card[] = useMemo(() => filterCatalog(cards, filterState), [cards, filterState]);
+  let finalCards: Card[] = useMemo(() => {
+    const filterState = {
+      category: filterCategory,
+      type: filterType ? filterType.split('-') : [],
+      level: filterLevel ? filterLevel.split('-') : []
+    };
+
+    return filterCatalog(cards, filterState);
+  }, [cards, filterCategory, filterType, filterLevel]);
 
   try {
     finalCards = sortingCards[sortingType](finalCards);
@@ -111,12 +127,11 @@ export default function CatalogContentComponent() {
           onTypeChange={changeType}
           onLevelChange={changeLevel}
           onResetClick={resetFilters}
-          filterState={filterState}
         />
       </div>
       <div className="catalog__content">
-        <SortingComponent sortingType={sortingType} sortingOrder={sortingOrder} onSortingChange={changeSorting} />
-        <CatalogListComponent cards={finalCards} currentPage={Number(currentPage)} />
+        <SortingComponent onSortingChange={changeSorting} />
+        {!!finalCards.length && <CatalogListComponent cards={finalCards} currentPage={Number(currentPage)} />}
         {finalCards.length > CARDS_PER_PAGE &&
           <PaginationComponent totalCardsCount={finalCards.length} currentPage={Number(currentPage)} onClick={changePage} />}
       </div>

@@ -1,14 +1,16 @@
 
 import { ChangeEvent } from 'react';
 import { SortingActiveOrder, SortingActiveType } from '../../consts';
+import { useSearchParams } from 'react-router-dom';
 
 type SortingProps = {
-  sortingType: string;
-  sortingOrder: string;
   onSortingChange: (type: string) => void;
 }
 
-export default function SortingComponent({ sortingOrder, sortingType, onSortingChange }: SortingProps) {
+export default function SortingComponent({ onSortingChange }: SortingProps) {
+  const [searchParams] = useSearchParams();
+
+  const { sortingType, sortingOrder } = Object.fromEntries([...searchParams]);
 
   const correctType = Object.values(SortingActiveType).find((type) => type === sortingType);
   const correctOrder = Object.values(SortingActiveOrder).find((order) => order === sortingOrder);

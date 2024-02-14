@@ -8,16 +8,16 @@ export default function RatingComponent({ rating }: CardRatingProps) {
 
   for (let i = 1; i <= 5; i++) {
     cardRating.push(
-      <use xlinkHref={i <= rating ? '#icon-full-star' : '#icon-star'} data-testid={i <= rating ? 'full-star' : ''} />
+      <svg width={17} height={16} aria-hidden="true" key={`star-${i}`}>
+        <use xlinkHref={i <= rating ? '#icon-full-star' : '#icon-star'} data-testid={i <= rating ? 'full-star' : ''} />
+      </svg>
     );
   }
 
   return (
     <>
       {cardRating.map((cardStar) => (
-        <svg width={17} height={16} aria-hidden="true" key={cardStar.key}>
-          {cardStar}
-        </svg>
+        cardStar
       ))}
     </>
   );
