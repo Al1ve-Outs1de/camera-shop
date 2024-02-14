@@ -18,6 +18,24 @@ export const SortingActiveOrder = {
   ToDown: 'down',
 };
 
+export const CyrillicCategory: Record<string, string> = {
+  photocamera: 'Фотоаппарат',
+  videocamera: 'Видеокамера',
+};
+
+export const CyrillicType: Record<string, string> = {
+  digital: 'Цифровая',
+  film: 'Плёночная',
+  snapshot: 'Моментальная',
+  collection: 'Коллекционная',
+};
+
+export const CyrillicLevel: Record<string, string> = {
+  zero: 'Нулевой',
+  'non-professional': 'Любительский',
+  professional: 'Профессиональный',
+};
+
 export enum AppRoute {
   Root = '/',
   Product = '/product',
