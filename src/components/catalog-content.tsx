@@ -142,6 +142,16 @@ export default function CatalogContentComponent() {
     }
   }, [changePage, searchParams, finalCards]);
 
+  useEffect(() => {
+    if (price && +price < minPrice) {
+      changePrice('price', minPrice.toString());
+    }
+
+    if (priceUp && +priceUp > maxPrice) {
+      changePrice('priceUp', maxPrice.toString());
+    }
+  }, [minPrice, maxPrice, changePrice, priceUp, price]);
+
   return (
     <div className="page-content__columns">
       <div className="catalog__aside">

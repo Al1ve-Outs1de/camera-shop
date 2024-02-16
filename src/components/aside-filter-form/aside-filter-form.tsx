@@ -45,12 +45,16 @@ const asideFilterComponent = memo(
 
       if (evt.target.name === 'price') {
         correctPrice = (Math.min(Math.max(Math.min(inputPrice, maxPrice), minPrice), maxPrice)).toString();
-
-        if (priceUp && +correctPrice > +priceUp) {
-          onPriceChange('priceUp', correctPrice);
-        }
       } else {
         correctPrice = (Math.max(Math.max(Math.min(inputPrice, maxPrice), +price || minPrice), minPrice)).toString();
+      }
+
+      if (correctPrice === searchParams.get(evt.target.name)) {
+        return;
+      }
+
+      if (priceUp && +correctPrice > +priceUp) {
+        onPriceChange('priceUp', correctPrice);
       }
 
       onPriceChange(evt.target.name, correctPrice);
