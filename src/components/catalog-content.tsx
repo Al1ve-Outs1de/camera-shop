@@ -17,12 +17,12 @@ export default function CatalogContentComponent() {
       sortingOrder: '',
       filterCategory: '',
       filterType: '',
-      filterLevel: ''
+      filterLevel: '',
     });
 
   const { data: cards = [] } = useGetProductsQuery();
 
-  const { page: currentPage, sortingType, sortingOrder, filterType, filterLevel, filterCategory } = Object.fromEntries([...searchParams]);
+  const { page: currentPage, sortingType, sortingOrder, filterType, filterLevel, filterCategory, price, priceUp } = Object.fromEntries([...searchParams]);
 
   const changePage = useCallback((pageNumber: number) => {
     setSearchParams((prevParams) => {
@@ -44,7 +44,14 @@ export default function CatalogContentComponent() {
     });
   };
 
-  function changeCategory(inputCategoryCheckbox: HTMLInputElement) {
+  const changePrice = useCallback((priceName: string, priceValue: string) => {
+    setSearchParams((prevParams) => {
+      prevParams.set(priceName, priceValue);
+      return prevParams;
+    }, { replace: true });
+  }, [setSearchParams]);
+
+  const changeCategory = (inputCategoryCheckbox: HTMLInputElement) => {
     const inputCategoryName = inputCategoryCheckbox.name;
 
     const categoryName = inputCategoryCheckbox.checked ? CyrillicCategory[inputCategoryName] : '';
@@ -61,9 +68,9 @@ export default function CatalogContentComponent() {
 
       return prevParams;
     }, { replace: true });
-  }
+  };
 
-  function changeType(typeName: string) {
+  const changeType = (typeName: string) => {
     const cyrillicTypeName = CyrillicType[typeName];
     const newTypeArr = toggleArrayElement(filterType ? filterType.split('-') : [], cyrillicTypeName).join('-');
 
@@ -71,26 +78,28 @@ export default function CatalogContentComponent() {
       prevParams.set('filterType', newTypeArr);
       return prevParams;
     }, { replace: true });
-  }
+  };
 
-  function changeLevel(levelName: string) {
+  const changeLevel = (levelName: string) => {
     const cyrillicLevelName = CyrillicLevel[levelName];
     const newLevelArr = toggleArrayElement(filterLevel ? filterLevel.split('-') : [], cyrillicLevelName).join('-');
     setSearchParams((prevParams) => {
       prevParams.set('filterLevel', newLevelArr);
       return prevParams;
     }, { replace: true });
-  }
+  };
 
-  function resetFilters() {
+  const resetFilters = () => {
     setSearchParams((prevParams) => {
       prevParams.set('filterCategory', '');
       prevParams.set('filterType', '');
       prevParams.set('filterLevel', '');
+      prevParams.set('price', '');
+      prevParams.set('priceUp', '');
 
       return prevParams;
     }, { replace: true });
-  }
+  };
 
   let finalCards: Card[] = useMemo(() => {
     const filterState = {
@@ -112,6 +121,20 @@ export default function CatalogContentComponent() {
     finalCards.reverse();
   }
 
+  const [minPrice, maxPrice] = useMemo(() => {
+    const prices = finalCards.map((card) => card.price);
+
+    return [prices.length ? Math.min(...prices) : 0, prices.length ? Math.max(...prices) : 0];
+  }, [finalCards]);
+
+  if (price) {
+    finalCards = finalCards.filter((card) => card.price >= +price);
+  }
+
+  if (priceUp) {
+    finalCards = finalCards.filter((card) => card.price <= +priceUp);
+  }
+
   useEffect(() => {
     const newPage = searchParams.get('page');
     if (newPage !== '1' && finalCards.length <= CARDS_PER_PAGE) {
@@ -123,15 +146,18 @@ export default function CatalogContentComponent() {
     <div className="page-content__columns">
       <div className="catalog__aside">
         <AsideFilterComponent
+          onPriceChange={changePrice}
           onCategoryChange={changeCategory}
           onTypeChange={changeType}
           onLevelChange={changeLevel}
           onResetClick={resetFilters}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
         />
       </div>
       <div className="catalog__content">
         <SortingComponent onSortingChange={changeSorting} />
-        {!!finalCards.length && <CatalogListComponent cards={finalCards} currentPage={Number(currentPage)} />}
+        <CatalogListComponent cards={finalCards} currentPage={Number(currentPage)} />
         {finalCards.length > CARDS_PER_PAGE &&
           <PaginationComponent totalCardsCount={finalCards.length} currentPage={Number(currentPage)} onClick={changePage} />}
       </div>

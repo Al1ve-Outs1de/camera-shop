@@ -29,17 +29,19 @@ export default function CatalogListComponent({ cards, currentPage }: CatalogList
   };
 
   return (
-    <>
-      <div className="cards catalog__cards">
-        {currentCardsForPage.map((card) => <CardComponent catalogCard={card} key={card.id} onClick={setActiveCardWithModal} />)}
-      </div>
-      <PopupCardContainerComponent
-        isActive={isModalActive}
-        onClick={() => {
-          toggleActive();
-        }}
-        card={activeCard}
-      />
-    </>
+    cards.length ?
+      <>
+        <div className="cards catalog__cards">
+          {currentCardsForPage.map((card) => <CardComponent catalogCard={card} key={card.id} onClick={setActiveCardWithModal} />)}
+        </div>
+        <PopupCardContainerComponent
+          isActive={isModalActive}
+          onClick={() => {
+            toggleActive();
+          }}
+          card={activeCard}
+        />
+      </>
+      : <h2 style={{ fontSize: '30px' }}>По вашему запросу ничего не найдено</h2>
   );
 }

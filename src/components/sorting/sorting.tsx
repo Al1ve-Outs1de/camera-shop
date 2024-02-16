@@ -32,22 +32,23 @@ export default function SortingComponent({ onSortingChange }: SortingProps) {
       <form action="#">
         <div className="catalog-sort__inner">
           <p className="title title--h5">Сортировать:</p>
-          <div className="catalog-sort__type" onChange={handleSortingChange}>
+          <div className="catalog-sort__type">
             <div className="catalog-sort__btn-text">
               <input
                 type="radio"
                 id="sortPrice"
                 name="sort"
                 checked={correctType === 'sortPrice'}
+                onChange={handleSortingChange}
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
             <div className="catalog-sort__btn-text">
-              <input type="radio" id="sortPopular" name="sort" checked={correctType === 'sortPopular'} />
+              <input type="radio" id="sortPopular" name="sort" checked={correctType === 'sortPopular'} onChange={handleSortingChange} />
               <label htmlFor="sortPopular">по популярности</label>
             </div>
           </div>
-          <div className="catalog-sort__order" onChange={handleSortingChange}>
+          <div className="catalog-sort__order">
             <div className="catalog-sort__btn catalog-sort__btn--up">
               <input
                 type="radio"
@@ -55,6 +56,7 @@ export default function SortingComponent({ onSortingChange }: SortingProps) {
                 name="sort-icon"
                 aria-label="По возрастанию"
                 checked={correctOrder === 'up'}
+                onChange={handleSortingChange}
               />
               <label htmlFor="up">
                 <svg width={16} height={14} aria-hidden="true">
@@ -69,6 +71,7 @@ export default function SortingComponent({ onSortingChange }: SortingProps) {
                 name="sort-icon"
                 aria-label="По убыванию"
                 checked={correctOrder === 'down'}
+                onChange={handleSortingChange}
               />
               <label htmlFor="down">
                 <svg width={16} height={14} aria-hidden="true">

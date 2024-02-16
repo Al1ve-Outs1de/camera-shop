@@ -1,20 +1,23 @@
-import { ChangeEvent, memo } from 'react';
+import { ChangeEvent, memo, FocusEvent } from 'react';
 import { CyrillicCategory, CyrillicLevel, CyrillicType } from '../../consts';
 import { useSearchParams } from 'react-router-dom';
 
 type AsideFilterProps = {
+  onPriceChange: (priceName: string, priceValue: string) => void;
   onCategoryChange: (categoryCheckBox: HTMLInputElement) => void;
   onTypeChange: (name: string) => void;
   onLevelChange: (name: string) => void;
   onResetClick: () => void;
+  minPrice: number;
+  maxPrice: number;
 }
 
 const asideFilterComponent = memo(
-  ({ onCategoryChange, onLevelChange, onTypeChange, onResetClick }: AsideFilterProps) => {
+  ({ onPriceChange, onCategoryChange, onLevelChange, onTypeChange, onResetClick, minPrice, maxPrice }: AsideFilterProps) => {
 
     const [searchParams] = useSearchParams();
 
-    const { filterType = '', filterLevel = '', filterCategory = '' } = Object.fromEntries([...searchParams]);
+    const { filterType = '', filterLevel = '', filterCategory = '', price = '', priceUp = '' } = Object.fromEntries([...searchParams]);
 
     function handleCategoryChange(evt: ChangeEvent<HTMLInputElement>) {
       onCategoryChange(evt.target);
@@ -28,6 +31,31 @@ const asideFilterComponent = memo(
       onLevelChange(evt.target.name);
     }
 
+    function handlePriceChange(evt: FocusEvent<HTMLInputElement>) {
+
+      if (!evt.target.value) {
+        const inputPrice = evt.target;
+
+        onPriceChange(inputPrice.name, inputPrice.value);
+        return;
+      }
+
+      const inputPrice = Number(evt.target.value);
+      let correctPrice = '';
+
+      if (evt.target.name === 'price') {
+        correctPrice = (Math.min(Math.max(Math.min(inputPrice, maxPrice), minPrice), maxPrice)).toString();
+
+        if (priceUp && +correctPrice > +priceUp) {
+          onPriceChange('priceUp', correctPrice);
+        }
+      } else {
+        correctPrice = (Math.max(Math.max(Math.min(inputPrice, maxPrice), +price || minPrice), minPrice)).toString();
+      }
+
+      onPriceChange(evt.target.name, correctPrice);
+    }
+
     return (
       <div className="catalog-filter">
         <form action="#">
@@ -37,7 +65,13 @@ const asideFilterComponent = memo(
             <div className="catalog-filter__price-range">
               <div className="custom-input">
                 <label>
-                  <input type="number" name="price" placeholder="от" />
+                  <input
+                    type="number"
+                    name="price"
+                    placeholder={minPrice.toString()}
+                    value={price}
+                    onChange={handlePriceChange}
+                  />
                 </label>
               </div>
               <div className="custom-input">
@@ -45,7 +79,9 @@ const asideFilterComponent = memo(
                   <input
                     type="number"
                     name="priceUp"
-                    placeholder="до"
+                    placeholder={maxPrice.toString()}
+                    onChange={handlePriceChange}
+                    value={priceUp}
                   />
                 </label>
               </div>
