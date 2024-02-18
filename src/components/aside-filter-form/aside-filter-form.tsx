@@ -1,4 +1,4 @@
-import { ChangeEvent, memo, FocusEvent } from 'react';
+import { ChangeEvent, memo, useEffect, useRef } from 'react';
 import { CyrillicCategory, CyrillicLevel, CyrillicType } from '../../consts';
 import { useSearchParams } from 'react-router-dom';
 
@@ -14,6 +14,9 @@ type AsideFilterProps = {
 
 const asideFilterComponent = memo(
   ({ onPriceChange, onCategoryChange, onLevelChange, onTypeChange, onResetClick, minPrice, maxPrice }: AsideFilterProps) => {
+
+    const minPriceRef = useRef<HTMLInputElement>(null);
+    const maxPriceRef = useRef<HTMLInputElement>(null);
 
     const [searchParams] = useSearchParams();
 
@@ -31,34 +34,93 @@ const asideFilterComponent = memo(
       onLevelChange(evt.target.name);
     }
 
-    function handlePriceChange(evt: FocusEvent<HTMLInputElement>) {
+    // function handlePriceChange(evt: ChangeEvent<HTMLInputElement>) {
 
-      if (!evt.target.value) {
-        const inputPrice = evt.target;
+    //   if (!evt.target.value) {
+    //     const inputPrice = evt.target;
 
-        onPriceChange(inputPrice.name, inputPrice.value);
-        return;
+    //     onPriceChange(inputPrice.name, inputPrice.value);
+    //     return;
+    //   }
+
+    //   const inputPrice = Number(evt.target.value);
+    //   let correctPrice = '';
+
+    //   if (evt.target.name === 'price') {
+    //     correctPrice = (Math.min(Math.max(Math.min(inputPrice, maxPrice), minPrice), maxPrice)).toString();
+    //   } else {
+    //     correctPrice = (Math.max(Math.max(Math.min(inputPrice, maxPrice), +price || minPrice), minPrice)).toString();
+    //   }
+
+    //   if (correctPrice === searchParams.get(evt.target.name)) {
+    //     return;
+    //   }
+
+    //   if (priceUp && +correctPrice > +priceUp) {
+    //     onPriceChange('priceUp', correctPrice);
+    //   }
+
+    //   onPriceChange(evt.target.name, correctPrice);
+    // }
+
+    useEffect(() => {
+      const minPriceInput = minPriceRef.current;
+      const maxPriceInput = maxPriceRef.current;
+
+      function handlePrice(this: HTMLInputElement) {
+        if (!this.value) {
+          onPriceChange(this.name, this.value);
+          return;
+        }
+
+        if (+this.value < +minPrice || +this.value > +maxPrice) {
+          if (this.name === 'price' && price) {
+            this.value = price;
+            return;
+          }
+
+          if (this.name === 'priceUp' && priceUp) {
+            this.value = priceUp;
+            return;
+          }
+        }
+
+        const inputPrice = Number(this.value);
+        let correctPrice = '';
+
+        if (this.name === 'price') {
+          correctPrice = (Math.min(Math.max(Math.min(inputPrice, maxPrice), minPrice), maxPrice)).toString();
+        } else {
+          correctPrice = (Math.max(Math.max(Math.min(inputPrice, maxPrice), +price || minPrice), minPrice)).toString();
+        }
+
+        if (priceUp && +correctPrice > +priceUp) {
+          onPriceChange('priceUp', correctPrice);
+        }
+
+        onPriceChange(this.name, correctPrice);
       }
 
-      const inputPrice = Number(evt.target.value);
-      let correctPrice = '';
+      minPriceInput?.addEventListener('change', handlePrice);
+      maxPriceInput?.addEventListener('change', handlePrice);
 
-      if (evt.target.name === 'price') {
-        correctPrice = (Math.min(Math.max(Math.min(inputPrice, maxPrice), minPrice), maxPrice)).toString();
-      } else {
-        correctPrice = (Math.max(Math.max(Math.min(inputPrice, maxPrice), +price || minPrice), minPrice)).toString();
+      return () => {
+        minPriceInput?.removeEventListener('change', handlePrice);
+        maxPriceInput?.removeEventListener('change', handlePrice);
+      };
+    }, [maxPrice, minPrice, onPriceChange, price, priceUp]);
+
+    useEffect(() => {
+      if (minPriceRef.current) {
+        minPriceRef.current.value = price;
       }
+    }, [price]);
 
-      if (correctPrice === searchParams.get(evt.target.name)) {
-        return;
+    useEffect(() => {
+      if (maxPriceRef.current) {
+        maxPriceRef.current.value = priceUp;
       }
-
-      if (priceUp && +correctPrice > +priceUp) {
-        onPriceChange('priceUp', correctPrice);
-      }
-
-      onPriceChange(evt.target.name, correctPrice);
-    }
+    }, [priceUp]);
 
     return (
       <div className="catalog-filter">
@@ -73,8 +135,8 @@ const asideFilterComponent = memo(
                     type="number"
                     name="price"
                     placeholder={minPrice.toString()}
-                    value={price}
-                    onChange={handlePriceChange}
+                    // value={price}
+                    ref={minPriceRef}
                   />
                 </label>
               </div>
@@ -84,8 +146,8 @@ const asideFilterComponent = memo(
                     type="number"
                     name="priceUp"
                     placeholder={maxPrice.toString()}
-                    onChange={handlePriceChange}
-                    value={priceUp}
+                    // value={priceUp}
+                    ref={maxPriceRef}
                   />
                 </label>
               </div>
