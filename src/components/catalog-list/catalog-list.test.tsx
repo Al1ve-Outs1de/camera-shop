@@ -3,7 +3,7 @@ import { withRouter } from '../../utils/mock-component';
 import CatalogListComponent from './catalog-list';
 import { makeFakeCard } from '../../utils/mocks';
 import { Provider } from 'react-redux';
-import { store } from '../../redux/store';
+import { store } from '../../store/store';
 
 const mockCards = Array.from({ length: 10 }, () => makeFakeCard());
 

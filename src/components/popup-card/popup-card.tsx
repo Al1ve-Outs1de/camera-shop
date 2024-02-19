@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../hooks';
-import { addProductToBasket as dispatchProductToBasket } from '../../redux/slices/basket/basket-slice';
+import { addProductToBasket as dispatchProductToBasket } from '../../store/slices/basket/basket-slice';
 import type { Card } from '../../types/catalog-card.type';
 import ProductImageComponent from '../product-image/product-image';
 import AddItemSuccess from '../add-item-success/add-item-success';

@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 import BannerSliderComponent from '../../components/banner-slider/banner-slider';
-import { useGetProductsQuery, useGetPromosQuery } from '../../redux/camerasApi';
+import { useGetProductsQuery, useGetPromosQuery } from '../../store/camerasApi';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
 import { AppRoute, NETWORK_ERROR_MESSAGE } from '../../consts';
 import { Link } from 'react-router-dom';

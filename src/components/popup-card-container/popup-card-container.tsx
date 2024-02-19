@@ -3,7 +3,7 @@ import { useAppSelector } from '../../hooks';
 import ModalLayoutComponent from '../modal-layout/modal-layout';
 import PopupCatalogCardComponent from '../popup-card/popup-card';
 import { Card } from '../../types/catalog-card.type';
-import { getBasketProducts } from '../../redux/slices/basket/selectors';
+import { getBasketProducts } from '../../store/slices/basket/selectors';
 
 type PopupContainerProps = {
   isActive: boolean;

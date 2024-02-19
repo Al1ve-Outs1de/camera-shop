@@ -1,6 +1,6 @@
 import { ChangeEvent, memo } from 'react';
 import { useAppDispatch } from '../../hooks';
-import { decrementProductCount, incrementProductCount, setProductCount } from '../../redux/slices/basket/basket-slice';
+import { decrementProductCount, incrementProductCount, setProductCount } from '../../store/slices/basket/basket-slice';
 import { BasketProduct } from '../../types/bakset-product.type';
 import ProductImageComponent from '../product-image/product-image';
 

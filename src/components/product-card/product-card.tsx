@@ -6,9 +6,9 @@ import classNames from 'classnames';
 import { CardActiveTab } from '../../consts';
 import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getBasketProducts } from '../../redux/slices/basket/selectors';
+import { getBasketProducts } from '../../store/slices/basket/selectors';
 import InBasketButtonComponent from '../in-basket-button/in-basket-button';
-import { addProductToBasket } from '../../redux/slices/basket/basket-slice';
+import { addProductToBasket } from '../../store/slices/basket/basket-slice';
 
 type ProductCardProps = {
   card: Card;

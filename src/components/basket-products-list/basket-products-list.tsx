@@ -5,7 +5,7 @@ import { Card } from '../../types/catalog-card.type';
 import ModalLayoutComponent from '../modal-layout/modal-layout';
 import PopupCardRemoveComponent from '../popup-card-remove/popup-card-remove';
 import { useModal } from '../../hooks/use-modal';
-import { getBasketProducts } from '../../redux/slices/basket/selectors';
+import { getBasketProducts } from '../../store/slices/basket/selectors';
 
 export default function BasketProductsListComponent() {
   const basketProducts = useAppSelector(getBasketProducts);

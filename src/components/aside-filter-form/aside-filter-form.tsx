@@ -12,7 +12,7 @@ type AsideFilterProps = {
   maxPrice: number;
 }
 
-const asideFilterComponent = memo(
+const AsideFilterComponent = memo(
   ({ onPriceChange, onCategoryChange, onLevelChange, onTypeChange, onResetClick, minPrice, maxPrice }: AsideFilterProps) => {
 
     const minPriceRef = useRef<HTMLInputElement>(null);
@@ -158,7 +158,7 @@ const asideFilterComponent = memo(
                 <input
                   type="checkbox"
                   name="digital"
-                  data-testId='digital'
+                  data-testid='digital'
                   onChange={handleTypeChange}
                   checked={filterType.includes(CyrillicType.digital)}
                 />
@@ -257,6 +257,6 @@ const asideFilterComponent = memo(
 
 );
 
-asideFilterComponent.displayName = 'AsideFilter';
+AsideFilterComponent.displayName = 'AsideFilter';
 
-export default asideFilterComponent;
+export default AsideFilterComponent;

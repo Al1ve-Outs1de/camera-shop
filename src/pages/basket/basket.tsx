@@ -3,8 +3,8 @@ import BasketProductsListComponent from '../../components/basket-products-list/b
 import BasketSummaryComponent from '../../components/basket-summary/basket-summary';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useScrollToTop } from '../../hooks/use-scroll-to-top';
-import { setDiscount } from '../../redux/slices/basket/basket-slice';
-import { getBasketProducts } from '../../redux/slices/basket/selectors';
+import { setDiscount } from '../../store/slices/basket/basket-slice';
+import { getBasketProducts } from '../../store/slices/basket/selectors';
 
 export default function BasketPage() {
   const dispatch = useAppDispatch();

@@ -4,7 +4,7 @@ import AsideFilterComponent from '../aside-filter-form/aside-filter-form';
 import PaginationComponent from '../pagination/pagination';
 import { useSearchParams } from 'react-router-dom';
 import { CARDS_PER_PAGE, CyrillicCategory, CyrillicLevel, CyrillicType, SortingActiveType } from '../../consts';
-import { useGetProductsQuery } from '../../redux/camerasApi';
+import { useGetProductsQuery } from '../../store/camerasApi';
 import { filterCatalog, sortingCards, toggleArrayElement } from '../../utils/utils';
 import { Card } from '../../types/catalog-card.type';
 import { useCallback, useEffect, useMemo } from 'react';

@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { AppRoute } from '../../consts';
 import { useAppSelector } from '../../hooks';
-import { getBasketProducts } from '../../redux/slices/basket/selectors';
+import { getBasketProducts } from '../../store/slices/basket/selectors';
 import SearchInputComponent from '../form-search/form-search';
 
 export default function HeaderComponent() {

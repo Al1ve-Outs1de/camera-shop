@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames';
-import { camerasApi } from '../../redux/camerasApi';
+import { camerasApi } from '../../store/camerasApi';
 import { useAppSelector } from '../../hooks';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../consts';

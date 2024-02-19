@@ -4,7 +4,7 @@ import { AppRoute } from '../../consts';
 import ProductImageComponent from '../product-image/product-image';
 import RatingComponent from '../rating/rating';
 import { useAppSelector } from '../../hooks';
-import { getBasketProducts } from '../../redux/slices/basket/selectors';
+import { getBasketProducts } from '../../store/slices/basket/selectors';
 import InBasketButtonComponent from '../in-basket-button/in-basket-button';
 import { memo } from 'react';
 

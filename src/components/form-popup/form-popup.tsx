@@ -1,7 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { useCreateNewReviewMutation } from '../../redux/camerasApi';
+import { useCreateNewReviewMutation } from '../../store/camerasApi';
 import type { ReviewForm } from '../../types/review-form.type';
 import type { NewReview } from '../../types/new-review.type';
 import { useParams } from 'react-router-dom';

@@ -1,15 +1,15 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setDiscount } from '../../redux/slices/basket/basket-slice';
+import { setDiscount } from '../../store/slices/basket/basket-slice';
 import classNames from 'classnames';
-import { useCreateNewOrderMutation, useGetCouponPromoMutation } from '../../redux/camerasApi';
+import { useCreateNewOrderMutation, useGetCouponPromoMutation } from '../../store/camerasApi';
 import type { NewOrder } from '../../types/new-order.type';
 import ModalLayoutComponent from '../modal-layout/modal-layout';
 import AddOrderSuccess from '../add-order-success/add-order-success';
 import { useModal } from '../../hooks/use-modal';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { toast } from 'react-toastify';
-import { getBasketDiscount, getBasketProducts, getPromo } from '../../redux/slices/basket/selectors';
+import { getBasketDiscount, getBasketProducts, getPromo } from '../../store/slices/basket/selectors';
 
 export default function BasketSummaryComponent() {
   const dispatch = useAppDispatch();

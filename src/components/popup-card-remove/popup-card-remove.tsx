@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks';
-import { removeProductFromBasket } from '../../redux/slices/basket/basket-slice';
+import { removeProductFromBasket } from '../../store/slices/basket/basket-slice';
 import type { Card } from '../../types/catalog-card.type';
 import ProductImageComponent from '../product-image/product-image';
 
