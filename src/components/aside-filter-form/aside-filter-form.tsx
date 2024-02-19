@@ -34,40 +34,11 @@ const asideFilterComponent = memo(
       onLevelChange(evt.target.name);
     }
 
-    // function handlePriceChange(evt: ChangeEvent<HTMLInputElement>) {
-
-    //   if (!evt.target.value) {
-    //     const inputPrice = evt.target;
-
-    //     onPriceChange(inputPrice.name, inputPrice.value);
-    //     return;
-    //   }
-
-    //   const inputPrice = Number(evt.target.value);
-    //   let correctPrice = '';
-
-    //   if (evt.target.name === 'price') {
-    //     correctPrice = (Math.min(Math.max(Math.min(inputPrice, maxPrice), minPrice), maxPrice)).toString();
-    //   } else {
-    //     correctPrice = (Math.max(Math.max(Math.min(inputPrice, maxPrice), +price || minPrice), minPrice)).toString();
-    //   }
-
-    //   if (correctPrice === searchParams.get(evt.target.name)) {
-    //     return;
-    //   }
-
-    //   if (priceUp && +correctPrice > +priceUp) {
-    //     onPriceChange('priceUp', correctPrice);
-    //   }
-
-    //   onPriceChange(evt.target.name, correctPrice);
-    // }
-
     useEffect(() => {
       const minPriceInput = minPriceRef.current;
       const maxPriceInput = maxPriceRef.current;
 
-      function handlePrice(this: HTMLInputElement) {
+      function handlePriceChange(this: HTMLInputElement) {
         if (!this.value) {
           onPriceChange(this.name, this.value);
           return;
@@ -101,12 +72,12 @@ const asideFilterComponent = memo(
         onPriceChange(this.name, correctPrice);
       }
 
-      minPriceInput?.addEventListener('change', handlePrice);
-      maxPriceInput?.addEventListener('change', handlePrice);
+      minPriceInput?.addEventListener('change', handlePriceChange);
+      maxPriceInput?.addEventListener('change', handlePriceChange);
 
       return () => {
-        minPriceInput?.removeEventListener('change', handlePrice);
-        maxPriceInput?.removeEventListener('change', handlePrice);
+        minPriceInput?.removeEventListener('change', handlePriceChange);
+        maxPriceInput?.removeEventListener('change', handlePriceChange);
       };
     }, [maxPrice, minPrice, onPriceChange, price, priceUp]);
 
@@ -135,7 +106,6 @@ const asideFilterComponent = memo(
                     type="number"
                     name="price"
                     placeholder={minPrice.toString()}
-                    // value={price}
                     ref={minPriceRef}
                   />
                 </label>
@@ -146,7 +116,6 @@ const asideFilterComponent = memo(
                     type="number"
                     name="priceUp"
                     placeholder={maxPrice.toString()}
-                    // value={priceUp}
                     ref={maxPriceRef}
                   />
                 </label>

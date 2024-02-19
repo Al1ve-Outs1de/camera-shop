@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { withRouter } from '../../utils/mock-component';
 import CatalogListComponent from './catalog-list';
 import { makeFakeCard } from '../../utils/mocks';
@@ -7,11 +7,16 @@ import { store } from '../../redux/store';
 
 const mockCards = Array.from({ length: 10 }, () => makeFakeCard());
 
-it('CatalogList rendering', async () => {
-  fetchMock.mockResponse(JSON.stringify(mockCards));
-  render(withRouter(<Provider store={store}><CatalogListComponent /></Provider>));
+describe('CatalogList', () => {
+  it('render filled list', () => {
+    render(withRouter(<Provider store={store}><CatalogListComponent cards={mockCards} currentPage={1} /></Provider>));
 
-  await waitFor(async () => {
-    expect(await screen.findAllByTestId('card-item')).toHaveLength(9);
+    expect(screen.getAllByTestId('card-item')).toHaveLength(9);
+  });
+
+  it('render message if list is empty', () => {
+    render(withRouter(<Provider store={store}><CatalogListComponent cards={[]} currentPage={1} /></Provider>));
+
+    expect(screen.getByText(/По вашему запросу ничего не найдено/i)).toBeInTheDocument();
   });
 });

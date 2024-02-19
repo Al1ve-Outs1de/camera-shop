@@ -4,7 +4,7 @@ import { useGetProductsQuery, useGetPromosQuery } from '../../redux/camerasApi';
 import LoadingSpinner from '../../components/loading-spinner/loading-spinner';
 import { AppRoute, NETWORK_ERROR_MESSAGE } from '../../consts';
 import { Link } from 'react-router-dom';
-import CatalogContentComponent from '../../components/catalog-content';
+import CatalogContentComponent from '../../components/catalog-content/catalog-content';
 
 export default function CatalogPage() {
 

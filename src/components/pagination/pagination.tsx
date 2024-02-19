@@ -23,7 +23,7 @@ const paginationComponent = memo(({ cardsPerPage = CARDS_PER_PAGE, totalCardsCou
   }
 
   return (
-    <div className="pagination">
+    <div className="pagination" data-testid='pagination-block'>
       <ul className="pagination__list">
 
         {currentPage > 3 &&

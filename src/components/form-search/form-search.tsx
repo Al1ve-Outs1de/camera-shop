@@ -35,7 +35,7 @@ export default function SearchInputComponent() {
           />
         </label>
         {(searchValue.length >= 3 && !!searchedProducts.length) &&
-          <ul className="form-search__select-list scroller">
+          <ul className="form-search__select-list scroller" data-testid='search-list'>
             {searchedProducts.map((product) => (
               <li className="form-search__select-item" tabIndex={-1} key={product.id}>
                 <Link style={{ color: 'inherit' }} to={`${AppRoute.Product}/${product.id}`} onClick={() => setSearchValue('')}>{product.name}</Link>
