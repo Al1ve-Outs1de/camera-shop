@@ -15,7 +15,7 @@ export default function SearchInputComponent() {
 
   return (
     <div className={classNames('form-search', { 'list-opened': searchValue })}>
-      <form>
+      <form onSubmit={(evt) => evt.preventDefault()}>
         <label>
           <svg
             className="form-search__icon"

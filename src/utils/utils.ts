@@ -37,3 +37,16 @@ export function toggleArrayElement<T>(array: T[], item: T): T[] {
 
   return [...array, item];
 }
+
+export function toggleSearchParam(
+  condition: boolean,
+  searchParams: URLSearchParams,
+  paramName: string,
+  paramValue: string
+) {
+  if (condition) {
+    searchParams.set(paramName, paramValue);
+  } else {
+    searchParams.delete(paramName);
+  }
+}

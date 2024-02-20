@@ -5,25 +5,19 @@ import PaginationComponent from '../pagination/pagination';
 import { useSearchParams } from 'react-router-dom';
 import { CARDS_PER_PAGE, CyrillicCategory, CyrillicLevel, CyrillicType, SortingActiveType } from '../../consts';
 import { useGetProductsQuery } from '../../store/camerasApi';
-import { filterCatalog, sortingCards, toggleArrayElement } from '../../utils/utils';
-import { Card } from '../../types/catalog-card.type';
+import { filterCatalog, sortingCards, toggleArrayElement, toggleSearchParam } from '../../utils/utils';
 import { useCallback, useEffect, useMemo } from 'react';
 
 export default function CatalogContentComponent() {
   const [searchParams, setSearchParams] = useSearchParams(
     {
       page: '1',
-      sortingType: '',
-      sortingOrder: '',
-      filterCategory: '',
-      filterType: '',
-      filterLevel: '',
     });
 
   const { data: cards = [] } = useGetProductsQuery();
 
-  const { page: currentPage, sortingType, sortingOrder, filterType, filterLevel, filterCategory, price, priceUp } = Object.fromEntries([...searchParams]);
-
+  const { page: currentPage, sortingType, sortingOrder, filterLevel, filterCategory, price, priceUp } = Object.fromEntries([...searchParams]);
+  const filterType = searchParams.get('filterType') || '';
   const changePage = useCallback((pageNumber: number) => {
     setSearchParams((prevParams) => {
       prevParams.set('page', pageNumber.toString());
@@ -45,63 +39,59 @@ export default function CatalogContentComponent() {
   };
 
   const changePrice = useCallback((priceName: string, priceValue: string) => {
-    setSearchParams((prevParams) => {
-      prevParams.set(priceName, priceValue);
-      return prevParams;
-    }, { replace: true });
-  }, [setSearchParams]);
+    toggleSearchParam(!!priceValue, searchParams, priceName, priceValue);
+
+    setSearchParams(searchParams, { replace: true });
+  }, [setSearchParams, searchParams]);
 
   const changeCategory = (inputCategoryCheckbox: HTMLInputElement) => {
     const inputCategoryName = inputCategoryCheckbox.name;
 
     const categoryName = inputCategoryCheckbox.checked ? CyrillicCategory[inputCategoryName] : '';
 
-    let currentTypeFilters = filterType.split('-');
+    let currentTypeFilters = filterType ? filterType.split('-') : [];
 
     if (categoryName === CyrillicCategory.videocamera) {
       currentTypeFilters = currentTypeFilters.filter((type) => type !== CyrillicType.snapshot && type !== CyrillicType.film);
     }
 
-    setSearchParams((prevParams) => {
-      prevParams.set('filterCategory', categoryName);
-      prevParams.set('filterType', currentTypeFilters.join('-'));
+    toggleSearchParam(inputCategoryCheckbox.checked, searchParams, 'filterCategory', categoryName);
+    toggleSearchParam(!!currentTypeFilters.length, searchParams, 'filterType', currentTypeFilters.join('-'));
 
-      return prevParams;
-    }, { replace: true });
+    setSearchParams(searchParams, { replace: true });
   };
 
   const changeType = (typeName: string) => {
     const cyrillicTypeName = CyrillicType[typeName];
     const newTypeArr = toggleArrayElement(filterType ? filterType.split('-') : [], cyrillicTypeName).join('-');
 
-    setSearchParams((prevParams) => {
-      prevParams.set('filterType', newTypeArr);
-      return prevParams;
-    }, { replace: true });
+    toggleSearchParam(!!newTypeArr.length, searchParams, 'filterType', cyrillicTypeName);
+    setSearchParams(searchParams, { replace: true });
   };
 
   const changeLevel = (levelName: string) => {
     const cyrillicLevelName = CyrillicLevel[levelName];
     const newLevelArr = toggleArrayElement(filterLevel ? filterLevel.split('-') : [], cyrillicLevelName).join('-');
-    setSearchParams((prevParams) => {
-      prevParams.set('filterLevel', newLevelArr);
-      return prevParams;
-    }, { replace: true });
+
+    toggleSearchParam(!!newLevelArr.length, searchParams, 'filterLevel', cyrillicLevelName);
+    setSearchParams(searchParams, { replace: true });
   };
 
   const resetFilters = () => {
-    setSearchParams((prevParams) => {
-      prevParams.set('filterCategory', '');
-      prevParams.set('filterType', '');
-      prevParams.set('filterLevel', '');
-      prevParams.set('price', '');
-      prevParams.set('priceUp', '');
+    if (Object.values(Object.fromEntries([...searchParams])).length === 1) {
+      return;
+    }
 
-      return prevParams;
-    }, { replace: true });
+    searchParams.delete('filterCategory');
+    searchParams.delete('filterType');
+    searchParams.delete('filterLevel');
+    searchParams.delete('price');
+    searchParams.delete('priceUp');
+
+    setSearchParams(searchParams, { replace: true });
   };
 
-  let finalCards: Card[] = useMemo(() => {
+  let finalCards = useMemo(() => {
     const filterState = {
       category: filterCategory,
       type: filterType ? filterType.split('-') : [],
@@ -111,11 +101,7 @@ export default function CatalogContentComponent() {
     return filterCatalog(cards, filterState);
   }, [cards, filterCategory, filterType, filterLevel]);
 
-  try {
-    finalCards = sortingCards[sortingType](finalCards);
-  } catch {
-    finalCards = [...cards];
-  }
+  finalCards = sortingCards[sortingType]?.(finalCards) || finalCards;
 
   if (sortingOrder === 'down') {
     finalCards.reverse();
@@ -141,16 +127,6 @@ export default function CatalogContentComponent() {
       changePage(1);
     }
   }, [changePage, searchParams, finalCards]);
-
-  useEffect(() => {
-    if (price && +price < minPrice) {
-      changePrice('price', minPrice.toString());
-    }
-
-    if (priceUp && +priceUp > maxPrice) {
-      changePrice('priceUp', maxPrice.toString());
-    }
-  }, [minPrice, maxPrice, changePrice, priceUp, price]);
 
   return (
     <div className="page-content__columns">

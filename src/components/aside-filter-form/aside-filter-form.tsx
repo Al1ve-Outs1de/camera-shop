@@ -44,18 +44,6 @@ const AsideFilterComponent = memo(
           return;
         }
 
-        if (+this.value < +minPrice || +this.value > +maxPrice) {
-          if (this.name === 'price' && price) {
-            this.value = price;
-            return;
-          }
-
-          if (this.name === 'priceUp' && priceUp) {
-            this.value = priceUp;
-            return;
-          }
-        }
-
         const inputPrice = Number(this.value);
         let correctPrice = '';
 
@@ -63,6 +51,11 @@ const AsideFilterComponent = memo(
           correctPrice = (Math.min(Math.max(Math.min(inputPrice, maxPrice), minPrice), maxPrice)).toString();
         } else {
           correctPrice = (Math.max(Math.max(Math.min(inputPrice, maxPrice), +price || minPrice), minPrice)).toString();
+        }
+
+        if (searchParams.get(this.name) === correctPrice) {
+          this.value = correctPrice;
+          return;
         }
 
         if (priceUp && +correctPrice > +priceUp) {
@@ -79,7 +72,7 @@ const AsideFilterComponent = memo(
         minPriceInput?.removeEventListener('change', handlePriceChange);
         maxPriceInput?.removeEventListener('change', handlePriceChange);
       };
-    }, [maxPrice, minPrice, onPriceChange, price, priceUp]);
+    }, [maxPrice, minPrice, onPriceChange, price, priceUp, searchParams]);
 
     useEffect(() => {
       if (minPriceRef.current) {
