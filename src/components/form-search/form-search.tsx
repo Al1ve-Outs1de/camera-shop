@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { camerasApi } from '../../store/camerasApi';
-import { useAppSelector } from '../../hooks';
+import { useGetProductsQuery } from '../../store/camerasApi';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../consts';
 
@@ -10,7 +9,7 @@ export default function SearchInputComponent() {
   const listItemsRef = useRef<HTMLAnchorElement[] | null[]>([]);
   const listRef = useRef<HTMLUListElement | null>(null);
 
-  const { data: products = [] } = useAppSelector(camerasApi.endpoints.getProducts.select());
+  const { data: products = [] } = useGetProductsQuery();
 
   const searchRegExp = new RegExp(searchValue, 'i');
   const searchedProducts = products.filter((product) => searchRegExp.test(product.name));
