@@ -65,7 +65,7 @@ export default function CatalogContentComponent() {
     const cyrillicTypeName = CyrillicType[typeName];
     const newTypeArr = toggleArrayElement(filterType ? filterType.split('-') : [], cyrillicTypeName).join('-');
 
-    toggleSearchParam(!!newTypeArr.length, searchParams, 'filterType', cyrillicTypeName);
+    toggleSearchParam(!!newTypeArr.length, searchParams, 'filterType', newTypeArr);
     setSearchParams(searchParams, { replace: true });
   };
 
@@ -73,7 +73,7 @@ export default function CatalogContentComponent() {
     const cyrillicLevelName = CyrillicLevel[levelName];
     const newLevelArr = toggleArrayElement(filterLevel ? filterLevel.split('-') : [], cyrillicLevelName).join('-');
 
-    toggleSearchParam(!!newLevelArr.length, searchParams, 'filterLevel', cyrillicLevelName);
+    toggleSearchParam(!!newLevelArr.length, searchParams, 'filterLevel', newLevelArr);
     setSearchParams(searchParams, { replace: true });
   };
 
@@ -127,6 +127,16 @@ export default function CatalogContentComponent() {
       changePage(1);
     }
   }, [changePage, searchParams, finalCards]);
+
+  useEffect(() => {
+    if (price && +price < minPrice || +price > maxPrice) {
+      changePrice('price', (Math.min(Math.max(Math.min(+price, maxPrice), minPrice), maxPrice)).toString());
+    }
+
+    if (priceUp && +priceUp < minPrice || +priceUp > maxPrice) {
+      changePrice('priceUp', (Math.max(Math.max(Math.min(+priceUp, maxPrice), +price || minPrice), minPrice)).toString());
+    }
+  }, [minPrice, maxPrice, changePrice, priceUp, price]);
 
   return (
     <div className="page-content__columns">
