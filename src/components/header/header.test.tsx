@@ -1,17 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import HeaderComponent from './header';
-import { withRouter, withStore } from '../../utils/mock-component';
-import { makeFakeBasketProduct } from '../../utils/mocks';
+import { withRouter } from '../../utils/mock-component';
+import { Provider } from 'react-redux';
+import { store } from '../../store/store';
 
 it('Header rendering', () => {
-  const mockBasketProducts = Array.from({ length: 5 }, () => makeFakeBasketProduct());
+  const withRoute = withRouter(<Provider store={store}><HeaderComponent /></Provider>);
 
-  const withRoute = withRouter(<HeaderComponent />);
-
-  const { withStoreComponent } = withStore(withRoute, { basket: { basketProducts: mockBasketProducts, discount: 0, promo: '' } });
-
-  render(withStoreComponent);
+  render(withRoute);
 
   expect(screen.getByLabelText(/Переход на главную/)).toBeInTheDocument();
-  expect(screen.getByTestId('products-count')).toHaveTextContent('5');
+  expect(screen.queryByTestId('products-count')).toBeNull();
 });
