@@ -8,6 +8,7 @@ export default function SearchInputComponent() {
   const [searchValue, setSearchValue] = useState('');
   const listItemsRef = useRef<HTMLAnchorElement[] | null[]>([]);
   const listRef = useRef<HTMLUListElement | null>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const { data: products = [] } = useGetProductsQuery();
 
@@ -18,7 +19,6 @@ export default function SearchInputComponent() {
     if (evt.key !== 'Tab' && evt.key !== 'Enter') {
       evt.preventDefault();
     }
-
     const itemValue = (evt.target as HTMLAnchorElement)?.textContent;
     const foundIndex = listItemsRef.current.findIndex((item) => item?.textContent === itemValue);
 
@@ -26,16 +26,35 @@ export default function SearchInputComponent() {
       listItemsRef.current[foundIndex + 1]?.focus();
     }
 
-    if (evt.key === 'ArrowUp' && foundIndex) {
+    if (evt.key === 'ArrowUp' && foundIndex !== -1) {
       listItemsRef.current[foundIndex - 1]?.focus();
+    }
+
+    if (evt.key === 'ArrowUp' && foundIndex === 0) {
+      searchRef.current?.focus();
+    }
+
+  }, []);
+
+  const handleSearchKeydown = useCallback((evt: KeyboardEvent) => {
+    if (evt.key === 'ArrowDown' && document.activeElement === searchRef.current) {
+      evt.preventDefault();
+      listItemsRef.current[0]?.focus();
     }
   }, []);
 
   useEffect(() => {
+    const searchInput = searchRef.current;
+
     if (listRef.current) {
       listRef.current.addEventListener('keydown', handleArrowKeydown);
+      searchRef.current?.addEventListener('keydown', handleSearchKeydown);
     }
-  }, [handleArrowKeydown, searchValue]);
+
+    return () => {
+      searchInput?.removeEventListener('keydown', handleSearchKeydown);
+    };
+  }, [handleArrowKeydown, searchValue, handleSearchKeydown]);
 
   return (
     <div className={classNames('form-search', { 'list-opened': searchValue })}>
@@ -56,6 +75,7 @@ export default function SearchInputComponent() {
             placeholder="Поиск по сайту"
             value={searchValue}
             onChange={(evt) => setSearchValue(evt.target.value)}
+            ref={searchRef}
           />
         </label>
         {(searchValue.length >= 3 && !!searchedProducts.length) &&
@@ -69,6 +89,7 @@ export default function SearchInputComponent() {
                   ref={(linkElement) => {
                     listItemsRef.current[index] = linkElement;
                   }}
+                  tabIndex={0}
                 >
                   {product.name}
                 </Link>
@@ -76,7 +97,11 @@ export default function SearchInputComponent() {
             ))}
           </ul>}
       </form>
-      <button className="form-search__reset" type="reset" onClick={() => setSearchValue('')}>
+      <button className="form-search__reset" type="reset" onClick={() => {
+        setSearchValue('');
+        searchRef.current?.focus();
+      }}
+      >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
         </svg>
