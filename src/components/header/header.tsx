@@ -5,7 +5,7 @@ import { getBasketProducts } from '../../store/slices/basket/selectors';
 import SearchInputComponent from '../form-search/form-search';
 
 export default function HeaderComponent() {
-  const basketProductsCount = useAppSelector(getBasketProducts).length;
+  const basketProductsCount = useAppSelector(getBasketProducts).reduce((accumulator, currentObject) => accumulator + currentObject.count, 0);
 
   return (
     <header className="header" id="header">

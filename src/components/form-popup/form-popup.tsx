@@ -45,7 +45,7 @@ export default function FormPopupComponent({ isActive, onClick }: FormPopupProps
       setTimeout(() => {
         reset();
         setSubmitted(false);
-      }, 500);
+      }, 600);
     }
 
   }, [isActive, reset]);

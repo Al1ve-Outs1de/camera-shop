@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { removeProductFromBasket } from '../../store/slices/basket/basket-slice';
 import type { Card } from '../../types/catalog-card.type';
 import ProductImageComponent from '../product-image/product-image';
+import { AppRoute } from '../../consts';
 
 type PopupCardRemoveComponentProps = {
   card: Card | null;
@@ -45,12 +47,12 @@ export default function PopupCardRemoveComponent({ card, onClick }: PopupCardRem
         >
           Удалить
         </button>
-        <button
+        <Link
           className="btn btn--transparent modal__btn modal__btn--half-width"
-          onClick={() => onClick()}
+          to={AppRoute.Root}
         >
           Продолжить покупки
-        </button>
+        </Link>
       </div></>
   );
 }
