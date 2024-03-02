@@ -1,4 +1,4 @@
-import { ChangeEvent, memo } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { decrementProductCount, incrementProductCount, setProductCount } from '../../store/slices/basket/basket-slice';
 import { BasketProduct } from '../../types/bakset-product.type';
@@ -9,8 +9,33 @@ type BasketItemProps = {
   onClick: (id: number) => void;
 }
 
-const basketItemComponent = memo(({ item: { card, count }, onClick }: BasketItemProps) => {
+const BasketItemComponent = memo(({ item: { card, count }, onClick }: BasketItemProps) => {
   const dispatch = useAppDispatch();
+  const countRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+
+    function handleCountChange(this: HTMLInputElement) {
+      let countValue = Number(this.value);
+
+      if (countValue < 1 || countValue > 99) {
+        countValue = Math.max(1, Math.min(countValue, 99));
+        this.value = countValue.toString();
+      }
+
+      dispatch(setProductCount({
+        productId: card.id, count: countValue
+      }));
+    }
+
+    countRef.current?.addEventListener('change', handleCountChange);
+  }, [dispatch, card.id]);
+
+  useEffect(() => {
+    if (countRef.current) {
+      countRef.current.value = count.toString();
+    }
+  }, [count]);
 
   return (
     <li className="basket-item" data-testid='basket-item'>
@@ -47,18 +72,17 @@ const basketItemComponent = memo(({ item: { card, count }, onClick }: BasketItem
           data-testid='productCount'
           type="number"
           id="counter1"
-          value={count}
+          defaultValue={count}
           min={1}
           max={99}
           aria-label="количество товара"
-          onInput={(evt: ChangeEvent<HTMLInputElement>) => dispatch(setProductCount({
-            productId: card.id, count: Math.min(Number(evt.target.value) || 1, 99)
-          }))}
+          ref={countRef}
         />
         <button
           className="btn-icon btn-icon--next"
           aria-label="увеличить количество товара"
           onClick={() => dispatch(incrementProductCount(card.id))}
+          disabled={count >= 99}
           data-testid='incCount'
         >
           <svg width={7} height={12} aria-hidden="true">
@@ -84,6 +108,6 @@ const basketItemComponent = memo(({ item: { card, count }, onClick }: BasketItem
 }
 );
 
-basketItemComponent.displayName = 'BasketItem';
+BasketItemComponent.displayName = 'BasketItem';
 
-export default basketItemComponent;
+export default BasketItemComponent;

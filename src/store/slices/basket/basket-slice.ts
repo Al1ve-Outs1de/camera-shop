@@ -10,7 +10,9 @@ export type basketInitialState = {
 };
 
 const initialState: basketInitialState = {
-  basketProducts: [],
+  basketProducts: JSON.parse(
+    localStorage.getItem('basketProducts') || ''
+  ) as BasketProduct[],
   discount: 0,
   promo: '',
 };

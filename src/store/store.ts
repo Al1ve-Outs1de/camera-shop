@@ -12,3 +12,16 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(camerasApi.middleware),
 });
+
+store.subscribe(() => {
+  if (
+    localStorage.getItem('basketProducts') ===
+    JSON.stringify(store.getState().basket.basketProducts)
+  ) {
+    return;
+  }
+  localStorage.setItem(
+    'basketProducts',
+    JSON.stringify(store.getState().basket.basketProducts)
+  );
+});

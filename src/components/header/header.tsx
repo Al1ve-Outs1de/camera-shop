@@ -1,12 +1,9 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../consts';
-import { useAppSelector } from '../../hooks';
-import { getBasketProducts } from '../../store/slices/basket/selectors';
 import SearchInputComponent from '../form-search/form-search';
+import BasketButtonComponent from '../basket-button';
 
 export default function HeaderComponent() {
-  const basketProductsCount = useAppSelector(getBasketProducts).reduce((accumulator, currentObject) => accumulator + currentObject.count, 0);
-
   return (
     <header className="header" id="header">
       <div className="container">
@@ -50,12 +47,7 @@ export default function HeaderComponent() {
           </ul>
         </nav>
         <SearchInputComponent />
-        <Link className="header__basket-link" to={AppRoute.Basket}>
-          <svg width={16} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-basket" />
-          </svg>
-          {!!basketProductsCount && <span className="header__basket-count" data-testid='products-count'>{basketProductsCount}</span>}
-        </Link>
+        <BasketButtonComponent />
       </div>
     </header >
   );
