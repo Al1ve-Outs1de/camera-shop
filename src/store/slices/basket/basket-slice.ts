@@ -9,12 +9,14 @@ export type basketInitialState = {
   promo: string;
 };
 
+const basketPromoDiscount = localStorage.getItem('basketDiscount')?.split('_');
+
 const initialState: basketInitialState = {
   basketProducts: JSON.parse(
     localStorage.getItem('basketProducts') || ''
   ) as BasketProduct[],
-  discount: 0,
-  promo: '',
+  discount: Number(basketPromoDiscount?.[1]) || 0,
+  promo: basketPromoDiscount?.[0] || '',
 };
 
 export const basketSlice = createSlice({
@@ -65,6 +67,9 @@ export const basketSlice = createSlice({
         (product) => product.card.id !== productId
       );
     },
+    removeAllProductsFromBasket(state) {
+      state.basketProducts = [];
+    },
     setProductCount(
       state,
       {
@@ -94,6 +99,7 @@ export const {
   incrementProductCount,
   decrementProductCount,
   removeProductFromBasket,
+  removeAllProductsFromBasket,
   setProductCount,
   setDiscount,
 } = basketSlice.actions;

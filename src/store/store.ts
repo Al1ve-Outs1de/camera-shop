@@ -15,13 +15,12 @@ export const store = configureStore({
 
 store.subscribe(() => {
   if (
-    localStorage.getItem('basketProducts') ===
+    localStorage.getItem('basketProducts') !==
     JSON.stringify(store.getState().basket.basketProducts)
   ) {
-    return;
+    localStorage.setItem(
+      'basketProducts',
+      JSON.stringify(store.getState().basket.basketProducts)
+    );
   }
-  localStorage.setItem(
-    'basketProducts',
-    JSON.stringify(store.getState().basket.basketProducts)
-  );
 });

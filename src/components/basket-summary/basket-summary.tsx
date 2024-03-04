@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setDiscount } from '../../store/slices/basket/basket-slice';
+import { removeAllProductsFromBasket, setDiscount } from '../../store/slices/basket/basket-slice';
 import classNames from 'classnames';
 import { useCreateNewOrderMutation, useGetCouponPromoMutation } from '../../store/camerasApi';
 import type { NewOrder } from '../../types/new-order.type';
@@ -10,17 +10,45 @@ import { useModal } from '../../hooks/use-modal';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { toast } from 'react-toastify';
 import { getBasketDiscount, getBasketProducts, getPromo } from '../../store/slices/basket/selectors';
+import { useEffect, useRef } from 'react';
 
 export default function BasketSummaryComponent() {
   const dispatch = useAppDispatch();
   const basketProducts = useAppSelector(getBasketProducts);
-  const discout = useAppSelector(getBasketDiscount);
+  const discount = useAppSelector(getBasketDiscount);
   const promo = useAppSelector(getPromo);
   const [getCoupon] = useGetCouponPromoMutation();
   const [createNewOrder, { isLoading }] = useCreateNewOrderMutation();
   const [isModalAcitve, toggleActive] = useModal();
+  const promoInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { handleSubmit, register, formState: { isSubmitting } } = useForm<{ promo: string }>();
+  const { handleSubmit, register, formState: { isSubmitting, isValid } } = useForm<{ promo: string }>();
+
+  const { ref: promoRef, ...rest } = register('promo', { required: true, pattern: /^[^\s]*$/ });
+
+  useEffect(() => {
+    promoInputRef.current?.addEventListener('keypress', (evt) => {
+      if (evt.key === ' ') {
+        evt.preventDefault();
+      }
+    });
+
+    promoInputRef.current?.addEventListener('input', (evt) => {
+      const inpVal = (evt.target as HTMLInputElement).value;
+      if (promoInputRef.current && inpVal.includes(' ')) {
+        promoInputRef.current.value = inpVal.replace(/ /g, '');
+      }
+    });
+  }, []);
+
+  useEffect(() => () => {
+    if (!discount && promo) {
+      dispatch(setDiscount({
+        discount: 0,
+        promo: ''
+      }));
+    }
+  }, [discount, promo, dispatch]);
 
   const onSubmit: SubmitHandler<{ promo: string }> = async (data) => {
     await getCoupon(data.promo)
@@ -30,12 +58,14 @@ export default function BasketSummaryComponent() {
           discount: couponDiscount,
           promo: data.promo
         }));
+        localStorage.setItem('basketDiscount', `${data.promo}_${couponDiscount}`);
       })
       .catch((err: FetchBaseQueryError) => {
         dispatch(setDiscount({
           discount: 0,
           promo: data.promo
         }));
+        localStorage.removeItem('basketDiscount');
         if (typeof err.status === 'string') {
           toast.error(err.status);
         }
@@ -50,11 +80,14 @@ export default function BasketSummaryComponent() {
       camerasIds: productsIds,
       coupon: promo || null
     };
-    createNewOrder(newOrder).then(() => toggleActive());
+    createNewOrder(newOrder).then(() => {
+      toggleActive();
+      dispatch(removeAllProductsFromBasket());
+    });
   }
 
   const totalPrice = basketProducts.reduce((total, product) => total + (product.card.price * product.count), 0);
-  const discountValue = Math.round(totalPrice * discout / 100);
+  const discountValue = Math.round(totalPrice * discount / 100);
 
   return (
     <>
@@ -65,22 +98,24 @@ export default function BasketSummaryComponent() {
           </p>
           <div className="basket-form">
             <form action="#" onSubmit={(event) => void handleSubmit(onSubmit)(event)}>
-              <div className={classNames('custom-input', { 'is-valid': discout && promo }, { 'is-invalid': !discout && promo })}>
+              <div className={classNames('custom-input', { 'is-valid': discount && promo }, { 'is-invalid': !discount && promo })}>
                 <label>
                   <span className="custom-input__label">Промокод</span>
                   <input
                     type="text"
                     placeholder="Введите промокод"
                     defaultValue={promo}
-                    {...register('promo', {
-                      required: true
-                    })}
+                    ref={(ref) => {
+                      promoRef(ref);
+                      promoInputRef.current = ref;
+                    }}
+                    {...rest}
                   />
                 </label>
-                {(!discout && promo) && <p className="custom-input__error">Промокод неверный</p>}
-                {!!discout && <p className="custom-input__success">Промокод принят!</p>}
+                {(!discount && promo) && <p className="custom-input__error">Промокод неверный</p>}
+                {!!discount && <p className="custom-input__success">Промокод принят!</p>}
               </div>
-              <button className="btn" type="submit" disabled={isSubmitting}>
+              <button className="btn" type="submit" disabled={isSubmitting || !isValid}>
                 Применить
               </button>
             </form>
@@ -93,7 +128,7 @@ export default function BasketSummaryComponent() {
           </p>
           <p className="basket__summary-item">
             <span className="basket__summary-text">Скидка:</span>
-            <span className="basket__summary-value basket__summary-value--bonus">
+            <span className={classNames('basket__summary-value', { 'basket__summary-value--bonus': discount })}>
               {discountValue.toLocaleString()} ₽
             </span>
           </p>
@@ -105,7 +140,7 @@ export default function BasketSummaryComponent() {
               {(totalPrice - discountValue).toLocaleString()} ₽
             </span>
           </p>
-          <button className="btn btn--purple" type="submit" onClick={submitNewOrder} disabled={isLoading}>
+          <button className="btn btn--purple" type="submit" onClick={submitNewOrder} disabled={isLoading || !basketProducts.length}>
             Оформить заказ
           </button>
         </div>

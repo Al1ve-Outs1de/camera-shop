@@ -1,21 +1,13 @@
-import { useEffect } from 'react';
+
 import BasketProductsListComponent from '../../components/basket-products-list/basket-products-list';
 import BasketSummaryComponent from '../../components/basket-summary/basket-summary';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { useScrollToTop } from '../../hooks/use-scroll-to-top';
-import { setDiscount } from '../../store/slices/basket/basket-slice';
 import { getBasketProducts } from '../../store/slices/basket/selectors';
 
 export default function BasketPage() {
-  const dispatch = useAppDispatch();
   const isBasketNotEmpty = !!useAppSelector(getBasketProducts).length;
   useScrollToTop();
-
-  useEffect(() => () => {
-    if (!isBasketNotEmpty) {
-      dispatch(setDiscount({ discount: 0, promo: '' }));
-    }
-  }, [dispatch, isBasketNotEmpty]);
 
   return (
     <main>
@@ -49,13 +41,9 @@ export default function BasketPage() {
         </div>
         <section className="basket">
           <div className="container">
-            <h1 className="title title--h2">{isBasketNotEmpty ? 'Корзина' : 'Корзина (пусто)'}</h1>
-            {!!isBasketNotEmpty &&
-              <>
-                <BasketProductsListComponent />
-                <BasketSummaryComponent />
-              </>}
-
+            <h1 className="title title--h2">Корзина</h1>
+            {isBasketNotEmpty && <BasketProductsListComponent />}
+            <BasketSummaryComponent />
           </div>
         </section>
       </div>
