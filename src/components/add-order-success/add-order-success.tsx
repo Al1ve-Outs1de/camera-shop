@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../consts';
+
 export default function AddOrderSuccess() {
   return (
     <>
@@ -6,8 +9,8 @@ export default function AddOrderSuccess() {
         <use xlinkHref="#icon-review-success"></use>
       </svg>
       <div className="modal__buttons">
-        <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button">Вернуться к покупкам
-        </button>
+        <Link to={AppRoute.Root} className="btn btn--purple modal__btn modal__btn--fit-width" type="button">Вернуться к покупкам
+        </Link>
       </div>
     </>
   );

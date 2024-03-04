@@ -10,7 +10,7 @@ import { useModal } from '../../hooks/use-modal';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 import { toast } from 'react-toastify';
 import { getBasketDiscount, getBasketProducts, getPromo } from '../../store/slices/basket/selectors';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function BasketSummaryComponent() {
   const dispatch = useAppDispatch();
@@ -20,6 +20,7 @@ export default function BasketSummaryComponent() {
   const [getCoupon] = useGetCouponPromoMutation();
   const [createNewOrder, { isLoading }] = useCreateNewOrderMutation();
   const [isModalAcitve, toggleActive] = useModal();
+  const [isError, setError] = useState(false);
   const promoInputRef = useRef<HTMLInputElement | null>(null);
 
   const { handleSubmit, register, formState: { isSubmitting, isValid } } = useForm<{ promo: string }>();
@@ -65,10 +66,14 @@ export default function BasketSummaryComponent() {
           discount: 0,
           promo: data.promo
         }));
+        setError(!isError);
         localStorage.removeItem('basketDiscount');
         if (typeof err.status === 'string') {
           toast.error(err.status);
         }
+      })
+      .finally(() => {
+        toggleActive();
       });
   };
 
@@ -80,10 +85,17 @@ export default function BasketSummaryComponent() {
       camerasIds: productsIds,
       coupon: promo || null
     };
-    createNewOrder(newOrder).then(() => {
-      toggleActive();
-      dispatch(removeAllProductsFromBasket());
-    });
+    createNewOrder(newOrder)
+      .unwrap()
+      .then(() => {
+        dispatch(removeAllProductsFromBasket());
+      })
+      .catch(() => {
+        setError(!isError);
+      })
+      .finally(() => {
+        toggleActive();
+      });
   }
 
   const totalPrice = basketProducts.reduce((total, product) => total + (product.card.price * product.count), 0);
@@ -145,8 +157,16 @@ export default function BasketSummaryComponent() {
           </button>
         </div>
       </div>
-      <ModalLayoutComponent isActive={isModalAcitve} onClick={toggleActive}>
-        <AddOrderSuccess />
+      <ModalLayoutComponent isActive={isModalAcitve} onClick={() => {
+        toggleActive();
+        setTimeout(() => {
+          setError(!isError);
+        }, 600);
+      }}
+      >
+        {!isError ?
+          <AddOrderSuccess />
+          : <h2 style={{ textAlign: 'center', lineHeight: '1.4' }}>Произошла ошибка,<br />попробуйте снова</h2>}
       </ModalLayoutComponent>
     </>
   );
