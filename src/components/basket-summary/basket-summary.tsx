@@ -42,14 +42,19 @@ export default function BasketSummaryComponent() {
     });
   }, []);
 
-  useEffect(() => () => {
-    if (!discount && promo) {
-      dispatch(setDiscount({
-        discount: 0,
-        promo: ''
-      }));
-    }
-  }, [discount, promo, dispatch]);
+  useEffect(() => {
+    const localInputRef = promoInputRef.current;
+
+    return () => {
+      if ((!localInputRef?.value && promo) || (promo && !discount)) {
+        dispatch(setDiscount({
+          discount: 0,
+          promo: ''
+        }));
+        localStorage.removeItem('basketDiscount');
+      }
+    };
+  }, [dispatch, promo, discount]);
 
   const onSubmit: SubmitHandler<{ promo: string }> = async (data) => {
     await getCoupon(data.promo)
@@ -66,14 +71,10 @@ export default function BasketSummaryComponent() {
           discount: 0,
           promo: data.promo
         }));
-        setError(!isError);
         localStorage.removeItem('basketDiscount');
         if (typeof err.status === 'string') {
           toast.error(err.status);
         }
-      })
-      .finally(() => {
-        toggleActive();
       });
   };
 
@@ -83,8 +84,9 @@ export default function BasketSummaryComponent() {
 
     const newOrder: NewOrder = {
       camerasIds: productsIds,
-      coupon: promo || null
+      coupon: discount ? promo : null
     };
+
     createNewOrder(newOrder)
       .unwrap()
       .then(() => {
@@ -152,7 +154,7 @@ export default function BasketSummaryComponent() {
               {(totalPrice - discountValue).toLocaleString()} ₽
             </span>
           </p>
-          <button className="btn btn--purple" type="submit" onClick={submitNewOrder} disabled={isLoading || !basketProducts.length}>
+          <button className="btn btn--purple" type="submit" onClick={isError ? () => true : submitNewOrder} disabled={isLoading || !basketProducts.length}>
             Оформить заказ
           </button>
         </div>
