@@ -25,7 +25,7 @@ export default function BasketProductsListComponent() {
 
   return (
     <>
-      <ul className="basket__list">
+      <ul className="basket__list" data-testid='basket-list'>
         {basketProducts.map((product) => <BasketItemComponent item={product} key={product.card.id} onClick={setActiveCardWithModal} />)}
       </ul>
       <ModalLayoutComponent isActive={isModalActive} onClick={toggleActive}>

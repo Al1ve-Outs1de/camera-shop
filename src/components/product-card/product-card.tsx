@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { CardActiveTab } from '../../consts';
 import { useSearchParams } from 'react-router-dom';
 import { useModal } from '../../hooks/use-modal';
-import ProductCardContainer from '../product-card-container';
+import ProductCardContainer from '../product-card-container/product-card-container';
 import { useAppDispatch } from '../../hooks';
 import { addProductToBasket } from '../../store/slices/basket/basket-slice';
 

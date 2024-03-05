@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { withStore } from '../../utils/mock-component';
+import { withRouter, withStore } from '../../utils/mock-component';
 import PopupCardRemoveComponent from './popup-card-remove';
 import { makeFakeCard } from '../../utils/mocks';
 
@@ -8,7 +8,7 @@ it('PopupCardRemove rendering', () => {
 
   const { withStoreComponent } = withStore(<PopupCardRemoveComponent card={mockCard} onClick={vi.fn()} />);
 
-  render(withStoreComponent);
+  render(withRouter(withStoreComponent));
 
   expect(screen.getByText(/Удалить этот товар?/i)).toBeInTheDocument();
   expect(screen.getByText('Удалить')).toBeInTheDocument();

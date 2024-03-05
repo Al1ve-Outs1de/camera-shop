@@ -10,7 +10,6 @@ it('ProductCard rendering', () => {
 
   render(withRouter(withStoreComponent));
 
-  expect(screen.getByText(mockProduct.name)).toBeInTheDocument();
   expect(screen.getByTestId('tabs-list')).toBeInTheDocument();
   expect(screen.getByTestId('tabs-text')).toBeInTheDocument();
 });

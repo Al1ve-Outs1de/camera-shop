@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { makeFakeCard } from '../../utils/mocks';
 import PopupCardContainerComponent from './popup-card-container';
-import { withStore } from '../../utils/mock-component';
+import { withRouter, withStore } from '../../utils/mock-component';
 
 it('Modal has class "modal--narrow" when card is in basket', () => {
   const mockBasketCard = makeFakeCard();
@@ -14,7 +14,7 @@ it('Modal has class "modal--narrow" when card is in basket', () => {
     }
   });
 
-  render(withStoreComponent);
+  render(withRouter(withStoreComponent));
 
   expect(screen.getByTestId('modal-block')).toHaveClass('modal--narrow');
 });

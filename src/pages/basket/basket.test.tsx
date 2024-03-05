@@ -10,7 +10,7 @@ describe('BasketPage', () => {
 
     render(withRouter(withStoreComponent));
 
-    expect(screen.getByText('Корзина (пусто)')).toBeInTheDocument();
+    expect(screen.queryByTestId('basket-list')).toBeNull();
   });
 
   it('rendering basket products when there are products in basket', () => {

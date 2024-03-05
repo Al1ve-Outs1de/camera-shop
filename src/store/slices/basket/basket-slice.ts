@@ -13,7 +13,7 @@ const basketPromoDiscount = localStorage.getItem('basketDiscount')?.split('_');
 
 const initialState: basketInitialState = {
   basketProducts: JSON.parse(
-    localStorage.getItem('basketProducts') || ''
+    localStorage.getItem('basketProducts') || '[]'
   ) as BasketProduct[],
   discount: Number(basketPromoDiscount?.[1]) || 0,
   promo: basketPromoDiscount?.[0] || '',

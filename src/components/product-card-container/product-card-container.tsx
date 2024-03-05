@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import ModalLayoutComponent from './modal-layout/modal-layout';
-import AddItemSuccess from './add-item-success/add-item-success';
-import PopupCatalogCardComponent from './popup-card/popup-card';
-import { Card } from '../types/catalog-card.type';
+import ModalLayoutComponent from '../modal-layout/modal-layout';
+import AddItemSuccess from '../add-item-success/add-item-success';
+import PopupCatalogCardComponent from '../popup-card/popup-card';
+import { Card } from '../../types/catalog-card.type';
 
 type ProductCardContainerProps = {
   isActive: boolean;

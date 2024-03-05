@@ -60,7 +60,7 @@ describe('BasketSlice testing', () => {
     expect(result.basketProducts[0].count).toBe(2);
   });
 
-  it('correctly decrement product count', () => {
+  it('correctly increment product count', () => {
     const mockProduct = makeFakeCard();
     const expectedState: basketInitialState = {
       basketProducts: [{ card: mockProduct, count: 2 }],
@@ -76,7 +76,7 @@ describe('BasketSlice testing', () => {
     expect(result.basketProducts[0].count).toBe(1);
   });
 
-  it('correctly increment product count', () => {
+  it('correctly decrement product count', () => {
     const mockProducts = Array.from({ length: 3 }, () =>
       makeFakeBasketProduct()
     );
@@ -93,7 +93,7 @@ describe('BasketSlice testing', () => {
       removeProductFromBasket(removingProduct.card.id)
     );
 
-    expect(result.basketProducts.includes(removingProduct)).toBeFalsy();
+    expect(result.basketProducts.length).toBe(2);
   });
 
   it('correctly set product count', () => {

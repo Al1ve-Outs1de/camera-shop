@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../consts';
-import { useAppSelector } from '../hooks';
-import { getBasketProducts } from '../store/slices/basket/selectors';
+import { AppRoute } from '../../consts';
+import { useAppSelector } from '../../hooks';
+import { getBasketProducts } from '../../store/slices/basket/selectors';
 
 export default function BasketButtonComponent() {
   const basketProductsCount = useAppSelector(getBasketProducts).reduce((accumulator, currentObject) => accumulator + currentObject.count, 0);

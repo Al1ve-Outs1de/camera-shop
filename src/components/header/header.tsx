@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { AppRoute } from '../../consts';
 import SearchInputComponent from '../form-search/form-search';
-import BasketButtonComponent from '../basket-button';
+import BasketButtonComponent from '../basket-button/basket-button';
 
 export default function HeaderComponent() {
   return (
