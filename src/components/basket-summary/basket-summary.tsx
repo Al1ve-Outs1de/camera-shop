@@ -91,6 +91,11 @@ export default function BasketSummaryComponent() {
       .unwrap()
       .then(() => {
         dispatch(removeAllProductsFromBasket());
+        dispatch(setDiscount({ discount: 0, promo: '' }));
+        if (promoInputRef.current) {
+          promoInputRef.current.value = '';
+        }
+        localStorage.removeItem('basketDiscount');
       })
       .catch(() => {
         setError(!isError);
