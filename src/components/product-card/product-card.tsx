@@ -7,8 +7,9 @@ import { CardActiveTab } from '../../consts';
 import { useSearchParams } from 'react-router-dom';
 import { useModal } from '../../hooks/use-modal';
 import ProductCardContainer from '../product-card-container/product-card-container';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addProductToBasket } from '../../store/slices/basket/basket-slice';
+import ModalLayoutComponent from '../modal-layout/modal-layout';
 
 type ProductCardProps = {
   card: Card;
@@ -20,6 +21,9 @@ export default function ProductCardComponent({ card }: ProductCardProps) {
   const [isModalActive, toggleActive] = useModal();
   const [isAdded, setAddedStatus] = useState(false);
   const dispatch = useAppDispatch();
+  const basketCards = useAppSelector((state) => state.basket.basketProducts);
+
+  const productInBasket = basketCards.find((basketCard) => basketCard.card.id === card.id);
 
   useEffect(() => {
     const currentQuery = searchParams.get('activeTab');
@@ -53,11 +57,12 @@ export default function ProductCardComponent({ card }: ProductCardProps) {
           <p className="product__price">
             <span className="visually-hidden">Цена:</span>{card.price.toLocaleString()} ₽
           </p>
-          <button className="btn btn--purple" type="button" onClick={() => {
-            if (!isAdded) {
-              toggleActive();
-            }
-          }}
+          <button className="btn btn--purple" type="button"
+            onClick={() => {
+              if (!isAdded) {
+                toggleActive();
+              }
+            }}
           >
             <svg width={24} height={16} aria-hidden="true">
               <use xlinkHref="#icon-add-basket" />
@@ -103,23 +108,28 @@ export default function ProductCardComponent({ card }: ProductCardProps) {
           </div>
         </div>
       </div>
-      <ProductCardContainer
-        card={card}
-        isActive={isModalActive}
-        isAdded={isAdded}
-        onCloseButtonClick={() => {
-          toggleActive();
-          if (isAdded) {
-            setTimeout(() => {
-              setAddedStatus(!isAdded);
-            }, 600);
-          }
-        }}
-        onAddButtonClick={() => {
-          dispatch(addProductToBasket(card));
-          setAddedStatus(!isAdded);
-        }}
-      />
+      {(productInBasket && productInBasket?.count >= 99 && !isAdded) ?
+        <ModalLayoutComponent isActive={isModalActive} onClick={() => toggleActive()}>
+          <h2 style={{ textAlign: 'center', lineHeight: '1.4' }}>Достигнуто максимальное количество<br />данного товара для покупки.</h2>
+        </ModalLayoutComponent>
+        :
+        <ProductCardContainer
+          card={card}
+          isActive={isModalActive}
+          isAdded={isAdded}
+          onCloseButtonClick={() => {
+            toggleActive();
+            if (isAdded) {
+              setTimeout(() => {
+                setAddedStatus(!isAdded);
+              }, 600);
+            }
+          }}
+          onAddButtonClick={() => {
+            dispatch(addProductToBasket(card));
+            setAddedStatus(!isAdded);
+          }}
+        />}
     </section>
   );
 }

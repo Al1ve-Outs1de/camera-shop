@@ -16,12 +16,12 @@ const BasketItemComponent = memo(({ item: { card, count }, onClick }: BasketItem
   useEffect(() => {
 
     function handleCountChange(this: HTMLInputElement) {
-      let countValue = Number(this.value);
+      let countValue = Math.round(Number(this.value));
 
       if (countValue < 1 || countValue > 99) {
         countValue = Math.max(1, Math.min(countValue, 99));
-        this.value = countValue.toString();
       }
+      this.value = countValue.toString();
 
       dispatch(setProductCount({
         productId: card.id, count: countValue
@@ -77,6 +77,7 @@ const BasketItemComponent = memo(({ item: { card, count }, onClick }: BasketItem
           max={99}
           aria-label="количество товара"
           ref={countRef}
+          onKeyDown={(evt) => (evt.key === 'e' || evt.key === '.') && evt.preventDefault()}
         />
         <button
           className="btn-icon btn-icon--next"
